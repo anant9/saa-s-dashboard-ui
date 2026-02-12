@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+export default {
   output: "standalone",
-  compress: true,
-  poweredByHeader: false,
+  experimental: {
+    outputFileTracingRoot: process.cwd(),
+  },
 }
 
-export default nextConfig
