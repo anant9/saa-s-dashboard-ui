@@ -3,6 +3,6 @@ builder = "NIXPACKS"
 buildCommand = "npm install --force"
 
 [deploy]
-startCommand = "npm run start"
+startCommand = "npm run dev"
 healthcheckPath = "/"
 healthcheckTimeout = 120
