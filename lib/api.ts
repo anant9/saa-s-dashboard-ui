@@ -67,7 +67,7 @@ export async function searchBusinesses(
   query: string,
   maxResults: number = 50,
 ): Promise<SearchResultsResponse> {
-  const url = new URL("/api/v1/search/natural", API_BASE_URL)
+  const url = new URL("/api/v1/search/business", API_BASE_URL)
   url.searchParams.set("query", query)
   url.searchParams.set("max_results", String(maxResults))
 
