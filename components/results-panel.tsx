@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useDashboard } from "@/lib/dashboard-context"
+import type { BusinessResult } from "@/lib/types"
 import { DataTable } from "@/components/data-table"
 import { MapView } from "@/components/map-view"
 import { ResultsSkeleton } from "@/components/results-skeleton"
@@ -51,6 +52,67 @@ const CRM_CONNECTORS = [
 
 type ViewMode = "table" | "map"
 
+function toExportRows(results: BusinessResult[]) {
+  return results.map((biz) => ({
+    name: biz.title,
+    category: biz.categoryName,
+    rating: biz.totalScore,
+    reviews_count: biz.reviewsCount,
+    status: biz.permanentlyClosed ? "Permanently Closed" : biz.temporarilyClosed ? "Temporarily Closed" : "Open",
+    lead_score: biz.leadScore,
+    address: biz.address,
+    neighborhood: biz.neighborhood,
+    street: biz.street,
+    city: biz.city,
+    state: biz.state,
+    postal_code: biz.postalCode,
+    country: biz.countryCode,
+    latitude: biz.location.lat,
+    longitude: biz.location.lng,
+    phone: biz.phone || "",
+    website: biz.website || "",
+    google_maps_url: biz.url,
+    image_url: biz.imageUrl || "",
+    place_id: biz.placeId,
+    cid: biz.cid,
+    fid: biz.fid || "",
+    kgmid: biz.kgmid || "",
+    rank: biz.rank ?? "",
+    scraped_at: biz.scrapedAt || "",
+    categories: biz.categories.join(" | "),
+    opening_hours: biz.openingHours.map((item) => `${item.day}: ${item.hours}`).join(" | "),
+  }))
+}
+
+function triggerDownload(content: BlobPart, fileName: string, mimeType: string) {
+  const blob = new Blob([content], { type: mimeType })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement("a")
+  link.href = url
+  link.download = fileName
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(url)
+}
+
+function toCsv(rows: Record<string, unknown>[]) {
+  if (rows.length === 0) return ""
+
+  const headers = Object.keys(rows[0])
+  const escapeCell = (value: unknown) => {
+    const text = value == null ? "" : String(value)
+    if (/[",\n]/.test(text)) return `"${text.replace(/"/g, '""')}"`
+    return text
+  }
+
+  const lines = [
+    headers.join(","),
+    ...rows.map((row) => headers.map((header) => escapeCell(row[header])).join(",")),
+  ]
+  return lines.join("\n")
+}
+
 export function ResultsPanel() {
   const { extraction, onSaveSearch } = useDashboard()
   const [page, setPage] = useState(1)
@@ -59,10 +121,39 @@ export function ResultsPanel() {
   const [viewMode, setViewMode] = useState<ViewMode>("table")
   const pageSize = 10
 
-  const handleExport = (format: string) => {
-    toast.success("Export started", {
-      description: `Your ${format.toUpperCase()} file with ${extraction.totalResults} results will be ready shortly.`,
-    })
+  const handleExport = async (format: "csv" | "excel" | "json") => {
+    if (extraction.results.length === 0) {
+      toast.error("No results to export")
+      return
+    }
+
+    const now = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")
+    const baseName = `extractai-results-${now}`
+    const rows = toExportRows(extraction.results)
+
+    try {
+      if (format === "csv") {
+        const csv = toCsv(rows)
+        triggerDownload(csv, `${baseName}.csv`, "text/csv;charset=utf-8;")
+      } else if (format === "json") {
+        const json = JSON.stringify(rows, null, 2)
+        triggerDownload(json, `${baseName}.json`, "application/json;charset=utf-8;")
+      } else {
+        const XLSX = await import("xlsx")
+        const worksheet = XLSX.utils.json_to_sheet(rows)
+        const workbook = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Results")
+        XLSX.writeFile(workbook, `${baseName}.xlsx`)
+      }
+
+      toast.success("Export complete", {
+        description: `${format.toUpperCase()} file downloaded successfully.`,
+      })
+    } catch (error) {
+      toast.error("Export failed", {
+        description: "Could not generate file. Please try again.",
+      })
+    }
   }
 
   const handleCrmConnect = (crmId: string) => {

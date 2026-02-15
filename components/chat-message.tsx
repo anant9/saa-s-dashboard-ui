@@ -2,11 +2,19 @@
 
 import { cn } from "@/lib/utils"
 import type { ChatMessage as ChatMessageType } from "@/lib/types"
-import { FilterCard } from "@/components/filter-card"
 import { BrainCircuit, User } from "lucide-react"
 
 interface ChatMessageProps {
   message: ChatMessageType
+}
+
+function formatMessageTime(timestamp: Date) {
+  const date = timestamp instanceof Date ? timestamp : new Date(timestamp)
+  const hours = date.getHours()
+  const hour12 = hours % 12 || 12
+  const minutes = date.getMinutes().toString().padStart(2, "0")
+  const meridiem = hours >= 12 ? "pm" : "am"
+  return `${hour12}:${minutes} ${meridiem}`
 }
 
 export function ChatMessage({ message }: ChatMessageProps) {
@@ -56,13 +64,9 @@ export function ChatMessage({ message }: ChatMessageProps) {
           {message.content}
         </div>
 
-        {message.filterCard && <FilterCard filter={message.filterCard} />}
 
-        <span className="px-1 text-[10px] text-muted-foreground">
-          {message.timestamp.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+        <span suppressHydrationWarning className="px-1 text-[10px] text-muted-foreground">
+          {formatMessageTime(message.timestamp)}
         </span>
       </div>
     </div>

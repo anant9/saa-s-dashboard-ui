@@ -1,8 +1,62 @@
 export interface BusinessResponse {
   name: string
+  title?: string
+  subTitle?: string
   place_id: string
   types: string[]
+  categoryName?: string
+  address?: string
+  neighborhood?: string
+  street?: string
+  postalCode?: string
+  countryCode?: string
+  phone?: string
+  phoneUnformatted?: string
+  claimThisBusiness?: boolean
+  totalScore?: number
+  permanentlyClosed?: boolean
+  temporarilyClosed?: boolean
+  fid?: string
+  cid?: string
+  reviewsCount?: number
+  imagesCount?: number
+  imageCategories?: string[]
+  scrapedAt?: string
+  googleFoodUrl?: string
+  peopleAlsoSearch?: string[]
+  placesTags?: string[]
+  reviewsTags?: string[]
+  additionalInfo?: Record<string, unknown> | null
+  gasPrices?: Record<string, unknown> | null
+  url?: string
+  searchPageUrl?: string
+  searchString?: string
+  language?: string
+  rank?: number
+  isAdvertisement?: boolean
+  imageUrl?: string
+  kgmid?: string
   primary_type?: string
+  price?: string
+  reviews_distribution?: {
+    oneStar?: number
+    twoStar?: number
+    threeStar?: number
+    fourStar?: number
+    fiveStar?: number
+  } | null
+  additional_info?: Record<string, unknown> | null
+  opening_hours_raw?: { day?: string; hours?: string }[]
+  search_string?: string
+  search_page_url?: string
+  scraped_at?: string
+  image_url?: string
+  images_count?: number
+  is_advertisement?: boolean
+  permanently_closed?: boolean
+  temporarily_closed?: boolean
+  claim_this_business?: boolean
+  country_code?: string
   business_status?: string
   google_maps_url?: string
   formatted_address?: string
@@ -22,7 +76,12 @@ export interface BusinessResponse {
     open_now?: boolean
     weekday_text?: string[]
   }
+  openingHours?: {
+    openNow?: boolean
+    weekdayText?: string[]
+  }
   photos?: string[]
+  [key: string]: unknown
 }
 
 export interface SearchResultsResponse {

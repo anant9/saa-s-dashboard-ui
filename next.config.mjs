@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 export default {
-  experimental: {
-    outputFileTracingRoot: process.cwd(),
-  },
+  devIndicators: false,
+  outputFileTracingRoot: process.cwd(),
 }
 

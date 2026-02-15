@@ -19,7 +19,7 @@ import {
   estimateCost,
   mockSavedSearches,
 } from "./mock-data"
-import { chatWithAgent, searchBusinesses } from "./api"
+import { searchBusinesses } from "./api"
 
 interface DashboardContextType {
   messages: ChatMessage[]
@@ -52,7 +52,7 @@ const WELCOME_MSG: ChatMessage = {
   id: "welcome",
   role: "assistant",
   content:
-    "Welcome to ExtractAI! Tell me what businesses you want to extract from Google Maps. For example:\n\n- \"Find top 50 restaurants in New York with 4+ star rating\"\n- \"Coffee shops in San Francisco\"\n- \"Dentists in Chicago with 200+ reviews\"\n\nI'll parse your query into extraction parameters and fetch the complete dataset. You can filter, export, or push results to your CRM afterwards.",
+    "Hi! How can I help you? ",
   timestamp: new Date(),
 }
 
@@ -76,63 +76,239 @@ export function DashboardProvider({
   }
 
   const mapSearchResults = useCallback((results: Awaited<ReturnType<typeof searchBusinesses>>["results"]): BusinessResult[] => {
-    return results.map((biz, index) => {
-      const rating = biz.rating ?? 0
-      const reviews = biz.user_ratings_total ?? 0
-      const leadScore = rating >= 4.5 && reviews >= 50 ? "hot" : rating >= 4.0 ? "warm" : "cold"
+    const pick = <T,>(...values: Array<T | null | undefined>): T | undefined => {
+      for (const value of values) {
+        if (value !== undefined && value !== null) return value
+      }
+      return undefined
+    }
 
-      const openingHours = (biz.opening_hours?.weekday_text || []).map((line) => {
-        const [day, ...rest] = line.split(":")
-        return {
-          day: day.trim(),
-          hours: rest.join(":").trim() || "",
+    const normalizeAdditionalInfo = (payload: unknown): Record<string, string[]> => {
+      if (!payload || typeof payload !== "object") return {}
+
+      const result: Record<string, string[]> = {}
+      for (const [key, value] of Object.entries(payload as Record<string, unknown>)) {
+        if (!Array.isArray(value)) continue
+
+        const normalizedValues = value
+          .map((item) => {
+            if (typeof item === "string") return item
+            if (!item || typeof item !== "object") return ""
+
+            return Object.entries(item as Record<string, unknown>)
+              .map(([k, v]) => `${k}: ${String(v)}`)
+              .join(", ")
+          })
+          .filter((entry) => entry.length > 0)
+
+        if (normalizedValues.length > 0) {
+          result[key] = normalizedValues
         }
-      })
+      }
+
+      return result
+    }
+
+    const normalizeUrl = (value: unknown): string | null => {
+      if (typeof value !== "string") return null
+      const cleaned = value.trim().replace(/\s+/g, "")
+      if (!cleaned) return null
+      if (!/^https?:\/\//i.test(cleaned)) return null
+      return cleaned
+    }
+
+    const normalizeOpeningHours = (biz: Awaited<ReturnType<typeof searchBusinesses>>["results"][number]) => {
+      const allDays = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ] as const
+
+      const canonicalDayMap: Record<string, (typeof allDays)[number]> = {
+        mon: "Monday",
+        monday: "Monday",
+        tue: "Tuesday",
+        tues: "Tuesday",
+        tuesday: "Tuesday",
+        wed: "Wednesday",
+        wednesday: "Wednesday",
+        thu: "Thursday",
+        thur: "Thursday",
+        thurs: "Thursday",
+        thursday: "Thursday",
+        fri: "Friday",
+        friday: "Friday",
+        sat: "Saturday",
+        saturday: "Saturday",
+        sun: "Sunday",
+        sunday: "Sunday",
+      }
+
+      const toCanonicalDay = (day: string) => {
+        const normalized = day.trim().toLowerCase().replace(/\.$/, "")
+        return canonicalDayMap[normalized]
+      }
+
+      const dayHours = new Map<(typeof allDays)[number], string>()
+
+      const weekdayText = pick(
+        biz.opening_hours?.weekday_text,
+        (biz.openingHours as { weekdayText?: string[] } | undefined)?.weekdayText,
+      )
+
+      const raw = pick(
+        biz.opening_hours_raw,
+        (biz as { openingHoursRaw?: { day?: string; hours?: string }[] }).openingHoursRaw,
+      )
+
+      const hasOpeningHours =
+        (Array.isArray(weekdayText) && weekdayText.length > 0)
+        || (Array.isArray(raw) && raw.length > 0)
+
+      if (Array.isArray(weekdayText) && weekdayText.length > 0) {
+        weekdayText.forEach((line) => {
+          const [day, ...rest] = line.split(":")
+          const canonicalDay = toCanonicalDay(day)
+          if (!canonicalDay) return
+          dayHours.set(canonicalDay, rest.join(":").trim() || "Closed")
+        })
+      } else {
+        if (Array.isArray(raw)) {
+          raw.forEach((item) => {
+            const day = item.day || ""
+            const canonicalDay = toCanonicalDay(day)
+            if (!canonicalDay) return
+            dayHours.set(canonicalDay, (item.hours || "").trim() || "Closed")
+          })
+        }
+      }
+
+      if (!hasOpeningHours) {
+        return {
+          hours: [] as { day: string; hours: string }[],
+          hasOpeningHours: false,
+        }
+      }
+
+      return {
+        hours: allDays.map((day) => ({
+          day,
+          hours: dayHours.get(day) || "Closed",
+        })),
+        hasOpeningHours: true,
+      }
+    }
+
+    return results.map((biz, index) => {
+      const rating = pick(biz.rating, biz.totalScore, 0) ?? 0
+      const reviews = pick(biz.user_ratings_total, biz.reviewsCount, 0) ?? 0
+      const leadScore = rating >= 4.5 && reviews >= 50 ? "hot" : rating >= 4.0 ? "warm" : "cold"
+      const { hours: openingHours, hasOpeningHours } = normalizeOpeningHours(biz)
+
+      const hasReviewBreakdown = Boolean(
+        biz.reviews_distribution && typeof biz.reviews_distribution === "object",
+      )
+
+      const reviewsDistribution = biz.reviews_distribution
+        ? {
+            oneStar: biz.reviews_distribution.oneStar ?? 0,
+            twoStar: biz.reviews_distribution.twoStar ?? 0,
+            threeStar: biz.reviews_distribution.threeStar ?? 0,
+            fourStar: biz.reviews_distribution.fourStar ?? 0,
+            fiveStar: biz.reviews_distribution.fiveStar ?? 0,
+          }
+        : {
+            oneStar: 0,
+            twoStar: 0,
+            threeStar: 0,
+            fourStar: 0,
+            fiveStar: 0,
+          }
+
+      const claimThisBusiness = pick(
+        biz.claim_this_business,
+        biz.claimThisBusiness,
+      )
 
       return {
         id: biz.place_id || `biz_${index}`,
-        title: biz.name || "Unknown",
-        subtitle: biz.primary_type || null,
-        categoryName: biz.primary_type || biz.types?.[0] || "Business",
+        title: pick(biz.name, biz.title, "Unknown") || "Unknown",
+        subtitle: pick(biz.subTitle, biz.primary_type, null) || null,
+        categoryName: pick(biz.categoryName, biz.primary_type, biz.types?.[0], "Business") || "Business",
         categories: biz.types || [],
-        address: biz.formatted_address || "",
-        neighborhood: "",
-        street: "",
+        address: pick(biz.formatted_address, biz.address, "") || "",
+        neighborhood: biz.neighborhood || "",
+        street: biz.street || "",
         city: biz.city || "",
-        postalCode: biz.postal_code || "",
+        postalCode: pick(biz.postal_code, biz.postalCode, "") || "",
         state: biz.state || "",
-        countryCode: biz.country || "",
-        phone: biz.international_phone_number || biz.formatted_phone_number || null,
-        website: biz.website || null,
-        url: biz.google_maps_url || "",
+        countryCode: pick(
+          biz.country,
+          biz.country_code,
+          biz.countryCode,
+          biz["counntry"] as string | undefined,
+          "",
+        ) || "",
+        phone: pick(biz.international_phone_number, biz.formatted_phone_number, biz.phone, null) || null,
+        website: normalizeUrl(biz.website),
+        url: normalizeUrl(pick(biz.google_maps_url, biz.url, "")) || "",
         totalScore: rating,
         reviewsCount: reviews,
-        reviewsDistribution: {
-          oneStar: 0,
-          twoStar: 0,
-          threeStar: 0,
-          fourStar: 0,
-          fiveStar: 0,
-        },
-        imageUrl: biz.photos?.[0] || null,
+        reviewsDistribution,
+        hasReviewBreakdown,
+        hasOpeningHours,
+        imageUrl: normalizeUrl(pick(biz.image_url, biz.imageUrl, biz.photos?.[0], null)),
         location: { lat: biz.latitude, lng: biz.longitude },
         placeId: biz.place_id || "",
-        cid: "",
-        permanentlyClosed: (biz.business_status || "").toLowerCase().includes("permanently"),
-        temporarilyClosed: (biz.business_status || "").toLowerCase().includes("temporarily"),
+        cid: biz.cid || "",
+        permanentlyClosed: pick(
+          biz.permanently_closed,
+          biz.permanentlyClosed,
+          (biz.business_status || "").toLowerCase().includes("permanently"),
+          false,
+        ) || false,
+        temporarilyClosed: pick(
+          biz.temporarily_closed,
+          biz.temporarilyClosed,
+          (biz.business_status || "").toLowerCase().includes("temporarily"),
+          false,
+        ) || false,
         openingHours,
         plusCode: null,
-        price: biz.price_level || null,
-        menu: null,
+        price: pick(biz.price_level, biz.price, null) || null,
+        menu: normalizeUrl(pick(biz.googleFoodUrl, null)),
         description: null,
-        additionalInfo: {},
+        additionalInfo: normalizeAdditionalInfo(pick(biz.additional_info, biz.additionalInfo) || {}),
         reservationLinks: [],
         orderLinks: [],
         emails: [],
         socialMedia: [],
-        claimStatus: "Unknown",
-        isAdvertisement: false,
+        claimStatus:
+          claimThisBusiness === true
+            ? "Claimed"
+            : claimThisBusiness === false
+              ? "Unclaimed"
+              : "Unknown",
+        isAdvertisement: pick(biz.is_advertisement, biz.isAdvertisement, false) || false,
         leadScore,
+        rank: biz.rank ?? null,
+        fid: biz.fid || null,
+        kgmid: biz.kgmid || null,
+        imageUrlRaw: normalizeUrl(pick(biz.image_url, biz.imageUrl, null)),
+        imagesCount: pick(biz.images_count, biz.imagesCount, null) || null,
+        phoneUnformatted: biz.phoneUnformatted || null,
+        scrapedAt: pick(biz.scraped_at, biz.scrapedAt, null) || null,
+        searchString: pick(biz.search_string, biz.searchString, null) || null,
+        searchPageUrl: normalizeUrl(pick(biz.search_page_url, biz.searchPageUrl, null)),
+        imageCategories: biz.imageCategories || [],
+        placesTags: biz.placesTags || [],
+        reviewsTags: biz.reviewsTags || [],
+        peopleAlsoSearch: biz.peopleAlsoSearch || [],
+        gasPrices: biz.gasPrices || null,
       }
     })
   }, [])
@@ -155,17 +331,8 @@ export function DashboardProvider({
       status: "loading",
     })
 
-    const loadMsg: ChatMessage = {
-      id: genId(),
-      role: "assistant",
-      content: `Extraction started! Fetching up to ${activeFilter.maxResults} results for "${activeFilter.searchQuery}" in "${activeFilter.locationQuery}"...\n\nScraping emails, social profiles, opening hours, reviews distribution, and all available data fields. This may take a moment.`,
-      timestamp: new Date(),
-    }
-    setMessages((prev) => [...prev, loadMsg])
-
     try {
-      const naturalQuery = pendingQueryText
-        || `${activeFilter.searchQuery} in ${activeFilter.locationQuery}`
+      const naturalQuery = activeFilter.searchQuery
       const response = await searchBusinesses(naturalQuery, activeFilter.maxResults)
       const results = mapSearchResults(response.results)
       const count = results.length
@@ -183,7 +350,7 @@ export function DashboardProvider({
       const doneMsg: ChatMessage = {
         id: genId(),
         role: "assistant",
-        content: `Extraction complete! Found **${count} businesses** with full data.\n\n**Cost:** $${cost.toFixed(2)} (${count} results x $${PRICE_PER_RESULT.toFixed(3)}/result)\n\nEach result includes: name, category, address, coordinates, phone, website, rating, review count, opening hours, and more.\n\nYou can now:\n- **Export** as CSV, Excel, or JSON\n- **Push to CRM** (Salesforce, HubSpot, Zoho, Pipedrive, Close)\n- **Save this search** to run again later\n- **Click any row** to expand details`,
+        content: `Here are your results — ${count} businesses shown on the right side.`,
         timestamp: new Date(),
       }
       setMessages((prev) => [...prev, doneMsg])
@@ -202,7 +369,7 @@ export function DashboardProvider({
       const errorMsg: ChatMessage = {
         id: genId(),
         role: "assistant",
-        content: `Extraction failed: ${message}. Please try again in a moment.`,
+        content: `Could not fetch results. ${message}`,
         timestamp: new Date(),
       }
       setMessages((prev) => [...prev, errorMsg])
@@ -211,74 +378,39 @@ export function DashboardProvider({
 
   const sendMessage = useCallback(async (content: string) => {
     const normalized = content.trim().toLowerCase()
+    const query = content.trim()
+    if (!query) return
+
     const isConfirm = ["go ahead", "confirm", "run", "start", "yes", "ok", "okay"].includes(normalized)
     if (isConfirm && pendingFilter) {
-      setIsTyping(false)
+      setIsTyping(true)
       await confirmExtraction(pendingFilter)
+      setIsTyping(false)
       return
     }
 
     const userMsg: ChatMessage = {
       id: genId(),
       role: "user",
-      content,
+      content: query,
       timestamp: new Date(),
     }
     setMessages((prev) => [...prev, userMsg])
-    setIsTyping(true)
-
-    const greetingLike = ["hi", "hello", "hey", "thanks", "thank you"].includes(normalized)
-    const locationOnly = /^(in|near|around|at)\b/.test(normalized)
-    const minLength = 6
-    const isSearchLike = normalized.length >= minLength && !greetingLike && !locationOnly
-
-    if (!isSearchLike) {
-      try {
-        const history = [...messages, userMsg].map((msg) => ({
-          role: msg.role,
-          content: msg.content,
-        }))
-        const response = await chatWithAgent(content, history)
-        const normalizedFilter = response.filter
-          ? {
-              ...response.filter,
-              scrapeReviewsDetail:
-                response.filter.scrapeReviewsDetail && response.filter.maxReviews > 0,
-              maxReviews:
-                response.filter.scrapeReviewsDetail && response.filter.maxReviews > 0
-                  ? response.filter.maxReviews
-                  : 0,
-            }
-          : undefined
-        const aiContent = response.message
-          || response.clarificationQuestion
-          || "Got it."
-
-        const aiMsg: ChatMessage = {
-          id: genId(),
-          role: "assistant",
-          content: aiContent,
-          timestamp: new Date(),
-          filterCard: normalizedFilter,
-        }
-
-        setMessages((prev) => [...prev, aiMsg])
-        setPendingFilter(normalizedFilter || null)
-        setPendingQueryText(response.queryText || content)
-        setIsTyping(false)
-
-        if (normalizedFilter && !response.needsClarification) {
-          await confirmExtraction(normalizedFilter)
-        }
-      } catch (error) {
-        setIsTyping(false)
+    const greetingLike = ["hi", "hello", "hey", "help", "thanks", "thank you"].includes(normalized)
+    if (greetingLike) {
+      const quickHelpMsg: ChatMessage = {
+        id: genId(),
+        role: "assistant",
+        content: "Hi! I can run searches for you. Try:\n- Car wash in Berlin\n- Spa in Thailand\n- Dentists in Tokyo",
+        timestamp: new Date(),
       }
+      setMessages((prev) => [...prev, quickHelpMsg])
       return
     }
 
     const defaultMaxResults = 5
     const directFilter: ExtractionFilter = {
-      searchQuery: content.trim() || "Businesses",
+      searchQuery: query,
       locationQuery: "As provided",
       maxResults: defaultMaxResults,
       language: "en",
@@ -292,20 +424,12 @@ export function DashboardProvider({
       costEstimate: estimateCost(defaultMaxResults),
     }
 
-    const aiMsg: ChatMessage = {
-      id: genId(),
-      role: "assistant",
-      content: `Running search for: "${content.trim()}"`,
-      timestamp: new Date(),
-      filterCard: directFilter,
-    }
-
-    setMessages((prev) => [...prev, aiMsg])
     setPendingFilter(directFilter)
-    setPendingQueryText(content)
-    setIsTyping(false)
+    setPendingQueryText(query)
+    setIsTyping(true)
     await confirmExtraction(directFilter)
-  }, [messages, pendingFilter, confirmExtraction])
+    setIsTyping(false)
+  }, [pendingFilter, confirmExtraction])
 
   const cancelExtraction = useCallback(() => {
     setShowConfirmation(false)

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import type { BusinessResult } from "@/lib/types"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   ChevronDown,
   ChevronUp,
@@ -62,136 +63,296 @@ function StatusBadge({ closed, tempClosed }: { closed: boolean; tempClosed: bool
   return <Badge variant="outline" className="rounded-md border-emerald-500/20 bg-emerald-500/10 text-[11px] text-emerald-600 dark:text-emerald-400">Open</Badge>
 }
 
+function DetailItem({ label, value }: { label: string; value?: string | null }) {
+  if (!value) return null
+  return (
+    <p>
+      <span className="text-muted-foreground">{label}:</span> {value}
+    </p>
+  )
+}
+
+function formatScrapedAt(value: string) {
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  return `${date.toISOString().slice(0, 16).replace("T", " ")} UTC`
+}
+
 function ExpandedRow({ biz }: { biz: BusinessResult }) {
+  const [hideImage, setHideImage] = useState(false)
+
+  useEffect(() => {
+    setHideImage(false)
+  }, [biz.id, biz.imageUrl])
+
+  const showImage = Boolean(biz.imageUrl) && !hideImage
+  const imageUrl = showImage ? biz.imageUrl || undefined : undefined
+  const showReviewBreakdown = Boolean(biz.hasReviewBreakdown)
+  const showOpeningHours = Boolean(biz.hasOpeningHours)
+  const showReviewHoursBlock = showReviewBreakdown || showOpeningHours
+
   return (
     <TableRow className="border-border/20 bg-muted/20 hover:bg-muted/20">
       <TableCell colSpan={10} className="p-0">
-        <div className="grid grid-cols-1 gap-6 px-6 py-5 md:grid-cols-3">
-          {/* Column 1: Location & Contact */}
-          <div className="space-y-3">
-            <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <MapPin className="h-3.5 w-3.5" /> Location & Contact
-            </h4>
-            <div className="space-y-1.5 text-sm">
-              <p><span className="text-muted-foreground">Street:</span> {biz.street}</p>
-              <p><span className="text-muted-foreground">Neighborhood:</span> {biz.neighborhood}</p>
-              <p><span className="text-muted-foreground">City:</span> {biz.city}, {biz.state} {biz.postalCode}</p>
-              <p><span className="text-muted-foreground">Country:</span> {biz.countryCode}</p>
-              {biz.plusCode && <p><span className="text-muted-foreground">Plus Code:</span> {biz.plusCode}</p>}
-              <p><span className="text-muted-foreground">Coords:</span> {biz.location.lat.toFixed(4)}, {biz.location.lng.toFixed(4)}</p>
-              {biz.phone && (
-                <p className="flex items-center gap-1.5">
-                  <Phone className="h-3 w-3 text-muted-foreground" />
-                  {biz.phone}
-                </p>
-              )}
-              {biz.emails.length > 0 && (
-                <div className="flex items-start gap-1.5">
-                  <Mail className="mt-0.5 h-3 w-3 text-muted-foreground" />
-                  <div>{biz.emails.map((e, i) => <span key={e}>{i > 0 ? ", " : ""}{e}</span>)}</div>
-                </div>
-              )}
-              {biz.website && (
-                <a href={biz.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline">
-                  <Globe className="h-3 w-3" /> {biz.website.replace(/^https?:\/\/(www\.)?/, "").slice(0, 35)}
-                </a>
-              )}
-            </div>
-          </div>
+        <div className="px-6 py-5">
+          <Tabs defaultValue="overview" className="w-full">
+            <TabsList className="h-8 bg-muted/40">
+              <TabsTrigger value="overview" className="h-6 px-2.5 text-xs">Overview</TabsTrigger>
+              <TabsTrigger value="contacts" className="h-6 px-2.5 text-xs">Contacts</TabsTrigger>
+              <TabsTrigger value="details" className="h-6 px-2.5 text-xs">Details</TabsTrigger>
+            </TabsList>
 
-          {/* Column 2: Business Details */}
-          <div className="space-y-3">
-            <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <Hash className="h-3.5 w-3.5" /> Business Details
-            </h4>
-            <div className="space-y-1.5 text-sm">
-              {biz.subtitle && <p><span className="text-muted-foreground">Subtitle:</span> {biz.subtitle}</p>}
-              <p><span className="text-muted-foreground">Place ID:</span> <span className="font-mono text-xs">{biz.placeId}</span></p>
-              <p><span className="text-muted-foreground">CID:</span> <span className="font-mono text-xs">{biz.cid}</span></p>
-              <p><span className="text-muted-foreground">Claim Status:</span> {biz.claimStatus}</p>
-              {biz.price && <p><span className="text-muted-foreground">Price Level:</span> {biz.price}</p>}
-              {biz.isAdvertisement && <Badge variant="outline" className="border-amber-500/30 text-[10px] text-amber-500">Ad</Badge>}
-              {biz.description && <p className="pt-1 text-xs leading-relaxed text-muted-foreground">{biz.description}</p>}
-              <div className="flex flex-wrap gap-1 pt-1">
-                {biz.categories.map((c) => (
-                  <Badge key={c} variant="secondary" className="text-[10px]">{c}</Badge>
-                ))}
-              </div>
-              {biz.menu && (
-                <a href={biz.menu} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 pt-1 text-primary hover:underline">
-                  <ExternalLink className="h-3 w-3" /> View Menu
-                </a>
-              )}
-              {biz.reservationLinks.length > 0 && (
-                <a href={biz.reservationLinks[0]} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline">
-                  <ExternalLink className="h-3 w-3" /> Reserve
-                </a>
-              )}
-              {biz.orderLinks.length > 0 && (
-                <a href={biz.orderLinks[0]} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline">
-                  <ExternalLink className="h-3 w-3" /> Order Online
-                </a>
-              )}
-            </div>
-          </div>
-
-          {/* Column 3: Reviews, Hours, Social */}
-          <div className="space-y-3">
-            <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <Star className="h-3.5 w-3.5" /> Review Distribution
-            </h4>
-            <div className="grid grid-cols-5 gap-1.5 text-xs">
-              {([5, 4, 3, 2, 1] as const).map((s) => {
-                const key = (["fiveStar", "fourStar", "threeStar", "twoStar", "oneStar"] as const)[5 - s]
-                const count = biz.reviewsDistribution[key]
-                const pct = biz.reviewsCount > 0 ? (count / biz.reviewsCount) * 100 : 0
-                return (
-                  <div key={s} className="flex flex-col items-center gap-0.5">
-                    <span className="text-muted-foreground">{s}{"*"}</span>
-                    <div className="flex h-14 w-full items-end overflow-hidden rounded-sm bg-muted/50">
-                      <div className="w-full rounded-sm bg-amber-400/60 transition-all" style={{ height: `${Math.max(pct, 2)}%` }} />
-                    </div>
-                    <span className="text-[10px] text-muted-foreground">{count.toLocaleString()}</span>
+            <TabsContent value="overview" className="mt-4">
+              <div className={cn("grid grid-cols-1 gap-6", showReviewHoursBlock ? "lg:grid-cols-3" : "lg:grid-cols-2")}>
+                <div className="space-y-3">
+                  <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <MapPin className="h-3.5 w-3.5" /> Location
+                  </h4>
+                  <div className="space-y-1.5 text-sm">
+                    <DetailItem label="Street" value={biz.street} />
+                    <DetailItem label="Neighborhood" value={biz.neighborhood} />
+                    <DetailItem label="City" value={`${biz.city}${biz.state ? `, ${biz.state}` : ""}${biz.postalCode ? ` ${biz.postalCode}` : ""}`} />
+                    <DetailItem label="Country" value={biz.countryCode} />
+                    <DetailItem label="Address" value={biz.address} />
+                    <DetailItem label="Plus Code" value={biz.plusCode} />
+                    <p><span className="text-muted-foreground">Coords:</span> {biz.location.lat.toFixed(4)}, {biz.location.lng.toFixed(4)}</p>
                   </div>
-                )
-              })}
-            </div>
-
-            <h4 className="flex items-center gap-1.5 pt-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <Clock className="h-3.5 w-3.5" /> Hours
-            </h4>
-            <div className="space-y-0.5 text-xs">
-              {biz.openingHours.slice(0, 7).map((oh) => (
-                <div key={oh.day} className="flex justify-between gap-2">
-                  <span className="text-muted-foreground">{oh.day.slice(0, 3)}</span>
-                  <span className={oh.hours === "Closed" ? "text-red-400" : "text-foreground"}>{oh.hours}</span>
                 </div>
-              ))}
-            </div>
 
-            {biz.socialMedia.length > 0 && (
-              <>
-                <h4 className="flex items-center gap-1.5 pt-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  <Share2 className="h-3.5 w-3.5" /> Social
-                </h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {biz.socialMedia.map((sm) => (
-                    <a key={sm.url} href={sm.url} target="_blank" rel="noopener noreferrer">
-                      <Badge variant="secondary" className="cursor-pointer text-[10px] transition-colors hover:bg-primary/20 hover:text-primary">{sm.platform}</Badge>
-                    </a>
-                  ))}
+                <div className="space-y-3">
+                  <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Hash className="h-3.5 w-3.5" /> Business
+                  </h4>
+                  <div className="space-y-1.5 text-sm">
+                    {imageUrl && (
+                      <div className="space-y-1.5 pb-1">
+                        <a href={imageUrl} target="_blank" rel="noopener noreferrer" className="block overflow-hidden rounded-lg border border-border/40">
+                          <img
+                            src={imageUrl}
+                            alt={biz.title}
+                            className="h-28 w-full object-cover"
+                            loading="lazy"
+                            onError={() => setHideImage(true)}
+                          />
+                        </a>
+                      </div>
+                    )}
+                    <DetailItem label="Subtitle" value={biz.subtitle} />
+                    <DetailItem label="Category" value={biz.categoryName} />
+                    <DetailItem label="Claim Status" value={biz.claimStatus} />
+                    {biz.price && <DetailItem label="Price Level" value={biz.price} />}
+                    {typeof biz.rank === "number" && <DetailItem label="Rank" value={`#${biz.rank}`} />}
+                    {biz.scrapedAt && <DetailItem label="Scraped At" value={formatScrapedAt(biz.scrapedAt)} />}
+                    {biz.isAdvertisement && <Badge variant="outline" className="border-amber-500/30 text-[10px] text-amber-500">Ad</Badge>}
+                    {biz.description && <p className="pt-1 text-xs leading-relaxed text-muted-foreground">{biz.description}</p>}
+                    <div className="flex flex-wrap gap-1 pt-1">
+                      {biz.categories.map((category, index) => (
+                        <Badge key={`${category}-${index}`} variant="secondary" className="text-[10px]">{category}</Badge>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </>
-            )}
 
-            {Object.keys(biz.additionalInfo).length > 0 && (
-              <div className="space-y-1 pt-2 text-xs">
-                {Object.entries(biz.additionalInfo).map(([key, vals]) => (
-                  <p key={key}><span className="text-muted-foreground">{key}:</span> {vals.join(", ")}</p>
-                ))}
+                {showReviewHoursBlock && (
+                  <div className="space-y-3">
+                    <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      <Star className="h-3.5 w-3.5" /> Reviews & Hours
+                    </h4>
+
+                    {showReviewBreakdown && (
+                      <div className="grid grid-cols-5 gap-1.5 text-xs">
+                        {([5, 4, 3, 2, 1] as const).map((s) => {
+                          const key = (["fiveStar", "fourStar", "threeStar", "twoStar", "oneStar"] as const)[5 - s]
+                          const count = biz.reviewsDistribution[key]
+                          const pct = biz.reviewsCount > 0 ? (count / biz.reviewsCount) * 100 : 0
+                          return (
+                            <div key={s} className="flex flex-col items-center gap-0.5">
+                              <span className="text-muted-foreground">{s}{"*"}</span>
+                              <div className="flex h-14 w-full items-end overflow-hidden rounded-sm bg-muted/50">
+                                <div className="w-full rounded-sm bg-amber-400/60 transition-all" style={{ height: `${Math.max(pct, 2)}%` }} />
+                              </div>
+                              <span className="text-[10px] text-muted-foreground">{count.toLocaleString()}</span>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+
+                    {showOpeningHours && (
+                      <>
+                        <h4 className="flex items-center gap-1.5 pt-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                          <Clock className="h-3.5 w-3.5" /> Hours
+                        </h4>
+                        <div className="space-y-0.5 text-xs">
+                          {biz.openingHours.slice(0, 7).map((oh, index) => (
+                            <div key={`${oh.day}-${index}`} className="flex justify-between gap-2">
+                              <span className="text-muted-foreground">{oh.day.slice(0, 3) || "--"}</span>
+                              <span className={oh.hours === "Closed" ? "text-red-400" : "text-foreground"}>{oh.hours || "--"}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </TabsContent>
+
+            <TabsContent value="contacts" className="mt-4">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div className="space-y-3">
+                  <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Phone className="h-3.5 w-3.5" /> Phone & Web
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    {biz.phone && <p className="flex items-center gap-1.5"><Phone className="h-3 w-3 text-muted-foreground" />{biz.phone}</p>}
+                    <DetailItem label="Raw Phone" value={biz.phoneUnformatted} />
+                    {biz.website && (
+                      <a href={biz.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline">
+                        <Globe className="h-3 w-3" /> {biz.website}
+                      </a>
+                    )}
+                    {biz.url && (
+                      <a href={biz.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline">
+                        <ExternalLink className="h-3 w-3" /> Google Maps Listing
+                      </a>
+                    )}
+                    {biz.menu && (
+                      <a href={biz.menu} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline">
+                        <ExternalLink className="h-3 w-3" /> Menu / Food Link
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Share2 className="h-3.5 w-3.5" /> Outreach Links
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    {biz.emails.length > 0 && (
+                      <div className="flex items-start gap-1.5">
+                        <Mail className="mt-0.5 h-3 w-3 text-muted-foreground" />
+                        <div className="space-y-0.5">{biz.emails.map((email, index) => <p key={`${email}-${index}`}>{email}</p>)}</div>
+                      </div>
+                    )}
+                    {biz.socialMedia.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {biz.socialMedia.map((sm, index) => (
+                          <a key={`${sm.url}-${index}`} href={sm.url} target="_blank" rel="noopener noreferrer">
+                            <Badge variant="secondary" className="cursor-pointer text-[10px] transition-colors hover:bg-primary/20 hover:text-primary">{sm.platform}</Badge>
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                    {biz.reservationLinks.length > 0 && (
+                      <div className="space-y-1">
+                        {biz.reservationLinks.map((link, index) => (
+                          <a key={`reservation-${index}`} href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline">
+                            <ExternalLink className="h-3 w-3" /> Reserve #{index + 1}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                    {biz.orderLinks.length > 0 && (
+                      <div className="space-y-1">
+                        {biz.orderLinks.map((link, index) => (
+                          <a key={`order-${index}`} href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline">
+                            <ExternalLink className="h-3 w-3" /> Order Link #{index + 1}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+
+                    {biz.emails.length === 0 && biz.socialMedia.length === 0 && biz.reservationLinks.length === 0 && biz.orderLinks.length === 0 && !biz.phone && !biz.website && !biz.url && !biz.menu && (
+                      <p className="text-muted-foreground">No contact channels available</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="details" className="mt-4">
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div className="space-y-3 text-sm">
+                  <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Hash className="h-3.5 w-3.5" /> Identifiers
+                  </h4>
+                  <p><span className="text-muted-foreground">Place ID:</span> <span className="font-mono text-xs">{biz.placeId || "--"}</span></p>
+                  <p><span className="text-muted-foreground">CID:</span> <span className="font-mono text-xs">{biz.cid || "--"}</span></p>
+                  <p><span className="text-muted-foreground">FID:</span> <span className="font-mono text-xs">{biz.fid || "--"}</span></p>
+                  <p><span className="text-muted-foreground">KGMID:</span> <span className="font-mono text-xs">{biz.kgmid || "--"}</span></p>
+                  <DetailItem label="Search String" value={biz.searchString} />
+                  {biz.searchPageUrl && (
+                    <a href={biz.searchPageUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline">
+                      <ExternalLink className="h-3 w-3" /> Search Page URL
+                    </a>
+                  )}
+                  {biz.imageUrl && (
+                    <a href={biz.imageUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline break-all">
+                      <ExternalLink className="h-3 w-3 shrink-0" /> Image URL
+                    </a>
+                  )}
+                  <DetailItem label="Images Count" value={typeof biz.imagesCount === "number" ? biz.imagesCount.toString() : null} />
+                </div>
+
+                <div className="space-y-3 text-sm">
+                  <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <Share2 className="h-3.5 w-3.5" /> Extra Metadata
+                  </h4>
+
+                  {biz.imageCategories && biz.imageCategories.length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground">Image Categories</p>
+                      <div className="flex flex-wrap gap-1">{biz.imageCategories.map((tag, index) => <Badge key={`img-cat-${index}`} variant="secondary" className="text-[10px]">{tag}</Badge>)}</div>
+                    </div>
+                  )}
+
+                  {biz.placesTags && biz.placesTags.length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground">Places Tags</p>
+                      <div className="flex flex-wrap gap-1">{biz.placesTags.map((tag, index) => <Badge key={`places-tag-${index}`} variant="secondary" className="text-[10px]">{tag}</Badge>)}</div>
+                    </div>
+                  )}
+
+                  {biz.reviewsTags && biz.reviewsTags.length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground">Reviews Tags</p>
+                      <div className="flex flex-wrap gap-1">{biz.reviewsTags.map((tag, index) => <Badge key={`reviews-tag-${index}`} variant="secondary" className="text-[10px]">{tag}</Badge>)}</div>
+                    </div>
+                  )}
+
+                  {biz.peopleAlsoSearch && biz.peopleAlsoSearch.length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground">People Also Search</p>
+                      <div className="space-y-0.5 text-xs">{biz.peopleAlsoSearch.map((item, index) => <p key={`also-${index}`}>{item}</p>)}</div>
+                    </div>
+                  )}
+
+                  {Object.keys(biz.additionalInfo).length > 0 && (
+                    <div className="space-y-1 pt-1 text-xs">
+                      {Object.entries(biz.additionalInfo).map(([key, vals]) => (
+                        <p key={key}><span className="text-muted-foreground">{key}:</span> {vals.join(", ")}</p>
+                      ))}
+                    </div>
+                  )}
+
+                  {biz.gasPrices && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-muted-foreground">Gas Prices</p>
+                      <pre className="overflow-x-auto rounded-md border border-border/40 bg-muted/30 p-2 text-[10px] leading-relaxed text-muted-foreground">
+                        {JSON.stringify(biz.gasPrices, null, 2)}
+                      </pre>
+                    </div>
+                  )}
+
+                  {!biz.gasPrices && Object.keys(biz.additionalInfo).length === 0 && (!biz.imageCategories || biz.imageCategories.length === 0) && (!biz.placesTags || biz.placesTags.length === 0) && (!biz.reviewsTags || biz.reviewsTags.length === 0) && (!biz.peopleAlsoSearch || biz.peopleAlsoSearch.length === 0) && (
+                    <p className="text-muted-foreground">No additional metadata available</p>
+                  )}
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </TableCell>
     </TableRow>
@@ -234,7 +395,7 @@ export function DataTable({ results, page, pageSize, onPageChange }: DataTablePr
             {paginatedData.map((biz) => {
               const expanded = expandedRows.has(biz.id)
               return (
-                <>{/* row pair */}
+                <Fragment key={biz.id}>{/* row pair */}
                   <TableRow
                     key={biz.id}
                     className="cursor-pointer border-border/30 transition-colors hover:bg-muted/40"
@@ -286,8 +447,8 @@ export function DataTable({ results, page, pageSize, onPageChange }: DataTablePr
                     </TableCell>
                     <TableCell className="text-center"><LeadBadge score={biz.leadScore} /></TableCell>
                   </TableRow>
-                  {expanded && <ExpandedRow key={`${biz.id}-exp`} biz={biz} />}
-                </>
+                  {expanded && <ExpandedRow biz={biz} />}
+                </Fragment>
               )
             })}
           </TableBody>

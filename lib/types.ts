@@ -54,6 +54,8 @@ export interface BusinessResult {
     fourStar: number
     fiveStar: number
   }
+  hasReviewBreakdown?: boolean
+  hasOpeningHours?: boolean
   imageUrl: string | null
   location: { lat: number; lng: number }
   placeId: string
@@ -73,6 +75,20 @@ export interface BusinessResult {
   claimStatus: string
   isAdvertisement: boolean
   leadScore: "hot" | "warm" | "cold"
+  rank?: number | null
+  fid?: string | null
+  kgmid?: string | null
+  imageUrlRaw?: string | null
+  imagesCount?: number | null
+  phoneUnformatted?: string | null
+  scrapedAt?: string | null
+  searchString?: string | null
+  searchPageUrl?: string | null
+  imageCategories?: string[]
+  placesTags?: string[]
+  reviewsTags?: string[]
+  peopleAlsoSearch?: string[]
+  gasPrices?: Record<string, unknown> | null
 }
 
 export interface ExtractionRun {
