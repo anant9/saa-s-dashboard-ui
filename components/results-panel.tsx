@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useDashboard } from "@/lib/dashboard-context"
 import type { BusinessResult } from "@/lib/types"
 import { DataTable } from "@/components/data-table"
@@ -8,6 +8,14 @@ import { MapView } from "@/components/map-view"
 import { ResultsSkeleton } from "@/components/results-skeleton"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +38,6 @@ import {
   FileJson2,
   AlertCircle,
   Coins,
-  DollarSign,
   Link2,
   CheckCircle2,
   Bookmark,
@@ -38,6 +45,8 @@ import {
   Sparkles,
   TableIcon,
   MapIcon,
+  Search,
+  FilterX,
 } from "lucide-react"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
@@ -51,6 +60,13 @@ const CRM_CONNECTORS = [
 ]
 
 type ViewMode = "table" | "map"
+type LeadFilter = "all" | "hot" | "warm" | "cold"
+type StatusFilter = "all" | "open" | "temporarily-closed" | "permanently-closed"
+
+interface ResultsPanelProps {
+  demoMode?: boolean
+  buyerSegmentsLabel?: string
+}
 
 function toExportRows(results: BusinessResult[]) {
   return results.map((biz) => ({
@@ -113,23 +129,70 @@ function toCsv(rows: Record<string, unknown>[]) {
   return lines.join("\n")
 }
 
-export function ResultsPanel() {
+export function ResultsPanel({
+  demoMode = false,
+  buyerSegmentsLabel,
+}: ResultsPanelProps) {
   const { extraction, onSaveSearch } = useDashboard()
   const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(25)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [leadFilter, setLeadFilter] = useState<LeadFilter>("all")
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all")
   const [crmDialogOpen, setCrmDialogOpen] = useState(false)
   const [selectedCrm, setSelectedCrm] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>("table")
-  const pageSize = 10
+
+  const filteredResults = useMemo(() => {
+    const query = searchTerm.trim().toLowerCase()
+
+    return extraction.results.filter((biz) => {
+      const matchesSearch = !query || [
+        biz.title,
+        biz.categoryName,
+        biz.address,
+        biz.city,
+        biz.state,
+        biz.neighborhood,
+        biz.phone || "",
+        biz.website || "",
+      ].join(" ").toLowerCase().includes(query)
+
+      const matchesLead = leadFilter === "all" || biz.leadScore === leadFilter
+
+      const matchesStatus =
+        statusFilter === "all"
+          ? true
+          : statusFilter === "open"
+            ? !biz.permanentlyClosed && !biz.temporarilyClosed
+            : statusFilter === "temporarily-closed"
+              ? biz.temporarilyClosed
+              : biz.permanentlyClosed
+
+      return matchesSearch && matchesLead && matchesStatus
+    })
+  }, [extraction.results, searchTerm, leadFilter, statusFilter])
+
+  useEffect(() => {
+    setPage(1)
+  }, [searchTerm, leadFilter, statusFilter, pageSize])
+
+  useEffect(() => {
+    const totalPages = Math.max(1, Math.ceil(filteredResults.length / pageSize))
+    if (page > totalPages) {
+      setPage(totalPages)
+    }
+  }, [filteredResults.length, pageSize, page])
 
   const handleExport = async (format: "csv" | "excel" | "json") => {
-    if (extraction.results.length === 0) {
+    if (filteredResults.length === 0) {
       toast.error("No results to export")
       return
     }
 
     const now = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")
     const baseName = `extractai-results-${now}`
-    const rows = toExportRows(extraction.results)
+    const rows = toExportRows(filteredResults)
 
     try {
       if (format === "csv") {
@@ -147,7 +210,7 @@ export function ResultsPanel() {
       }
 
       toast.success("Export complete", {
-        description: `${format.toUpperCase()} file downloaded successfully.`,
+        description: `${format.toUpperCase()} file downloaded successfully (${filteredResults.length} rows).`,
       })
     } catch (error) {
       toast.error("Export failed", {
@@ -173,6 +236,14 @@ export function ResultsPanel() {
   const handleSaveQuery = () => {
     onSaveSearch()
     toast.success("Search saved", { description: "You can find it under Saved Searches." })
+  }
+
+  const resetFilters = () => {
+    setSearchTerm("")
+    setLeadFilter("all")
+    setStatusFilter("all")
+    setPageSize(25)
+    setPage(1)
   }
 
   if (extraction.status === "idle") {
@@ -257,16 +328,14 @@ export function ResultsPanel() {
           </div>
 
           <Badge variant="secondary" className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-            {extraction.totalResults} places
+            {filteredResults.length} places
           </Badge>
-          <Badge variant="secondary" className="gap-1 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-            <Coins className="h-3 w-3" />
-            {extraction.creditsUsed} credits
-          </Badge>
-          <Badge variant="secondary" className="hidden gap-1 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground sm:flex">
-            <DollarSign className="h-3 w-3" />
-            ${extraction.costAmount.toFixed(2)}
-          </Badge>
+          {!demoMode && (
+            <Badge variant="secondary" className="gap-1 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+              <Coins className="h-3 w-3" />
+              {extraction.creditsUsed} credits
+            </Badge>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
@@ -322,14 +391,85 @@ export function ResultsPanel() {
         </div>
       </div>
 
+      <div className="border-b border-border/50 bg-background/70 px-4 py-3">
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center">
+          <div className="relative min-w-0 flex-1">
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by name, category, location, phone..."
+              className="h-8 rounded-lg pl-8 text-xs"
+            />
+          </div>
+
+          <Select value={leadFilter} onValueChange={(value: LeadFilter) => setLeadFilter(value)}>
+            <SelectTrigger className="h-8 w-full rounded-lg text-xs lg:w-[130px]">
+              <SelectValue placeholder="Lead" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Leads</SelectItem>
+              <SelectItem value="hot">Hot</SelectItem>
+              <SelectItem value="warm">Warm</SelectItem>
+              <SelectItem value="cold">Cold</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={statusFilter} onValueChange={(value: StatusFilter) => setStatusFilter(value)}>
+            <SelectTrigger className="h-8 w-full rounded-lg text-xs lg:w-[170px]">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="open">Open</SelectItem>
+              <SelectItem value="temporarily-closed">Temporarily Closed</SelectItem>
+              <SelectItem value="permanently-closed">Permanently Closed</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={String(pageSize)}
+            onValueChange={(value) => setPageSize(Number(value))}
+          >
+            <SelectTrigger className="h-8 w-full rounded-lg text-xs lg:w-[120px]">
+              <SelectValue placeholder="Rows/page" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="10">10 / page</SelectItem>
+              <SelectItem value="25">25 / page</SelectItem>
+              <SelectItem value="50">50 / page</SelectItem>
+              <SelectItem value="100">100 / page</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 gap-1.5 rounded-lg bg-transparent px-2.5 text-xs"
+            onClick={resetFilters}
+          >
+            <FilterX className="h-3.5 w-3.5" />
+            Reset
+          </Button>
+        </div>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Showing {filteredResults.length.toLocaleString()} of {extraction.results.length.toLocaleString()} records.
+        </p>
+        {demoMode && buyerSegmentsLabel && (
+          <p className="mt-1 text-xs text-muted-foreground">
+            {buyerSegmentsLabel}
+          </p>
+        )}
+      </div>
+
       {/* Content area - Table or Map */}
       {viewMode === "table" ? (
         <div className="scrollbar-thin flex-1 overflow-y-auto p-4">
-          <DataTable results={extraction.results} page={page} pageSize={pageSize} onPageChange={setPage} />
+          <DataTable results={filteredResults} page={page} pageSize={pageSize} onPageChange={setPage} />
         </div>
       ) : (
         <div className="flex-1">
-          <MapView results={extraction.results} />
+          <MapView results={filteredResults} />
         </div>
       )}
 

@@ -1,9 +1,17 @@
 "use client"
 
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useMemo, useState } from "react"
 import type { BusinessResult } from "@/lib/types"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   Table,
   TableBody,
@@ -25,6 +33,7 @@ import {
   Clock,
   Hash,
   Share2,
+  ArrowUpDown,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -361,8 +370,119 @@ function ExpandedRow({ biz }: { biz: BusinessResult }) {
 
 export function DataTable({ results, page, pageSize, onPageChange }: DataTableProps) {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
-  const totalPages = Math.ceil(results.length / pageSize)
-  const paginatedData = results.slice((page - 1) * pageSize, page * pageSize)
+  const [businessFilter, setBusinessFilter] = useState("")
+  const [categoryFilter, setCategoryFilter] = useState("")
+  const [minRating, setMinRating] = useState("")
+  const [minReviews, setMinReviews] = useState("")
+  const [addressFilter, setAddressFilter] = useState("")
+  const [phoneFilter, setPhoneFilter] = useState("")
+  const [priceFilter, setPriceFilter] = useState("")
+  const [statusFilter, setStatusFilter] = useState("all")
+  const [leadFilter, setLeadFilter] = useState("all")
+  const [sortKey, setSortKey] = useState<
+    "title" | "categoryName" | "totalScore" | "reviewsCount" | "address" | "phone" | "price" | "status" | "leadScore"
+  >("title")
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
+
+  const filteredAndSorted = useMemo(() => {
+    const byText = (value: string | null | undefined, query: string) =>
+      !query || String(value || "").toLowerCase().includes(query.toLowerCase())
+
+    const minRatingValue = Number(minRating)
+    const minReviewsValue = Number(minReviews)
+    const hasMinRating = minRating.trim().length > 0 && !Number.isNaN(minRatingValue)
+    const hasMinReviews = minReviews.trim().length > 0 && !Number.isNaN(minReviewsValue)
+
+    const filtered = results.filter((biz) => {
+      const status = biz.permanentlyClosed
+        ? "permanently-closed"
+        : biz.temporarilyClosed
+          ? "temporarily-closed"
+          : "open"
+
+      if (!byText(biz.title, businessFilter)) return false
+      if (!byText(biz.categoryName, categoryFilter)) return false
+      if (hasMinRating && biz.totalScore < minRatingValue) return false
+      if (hasMinReviews && biz.reviewsCount < minReviewsValue) return false
+      if (!byText(biz.address, addressFilter)) return false
+      if (!byText(biz.phone, phoneFilter)) return false
+      if (!byText(biz.price, priceFilter)) return false
+      if (statusFilter !== "all" && status !== statusFilter) return false
+      if (leadFilter !== "all" && biz.leadScore !== leadFilter) return false
+
+      return true
+    })
+
+    const scoreWeight: Record<string, number> = { cold: 1, warm: 2, hot: 3 }
+
+    const sorted = [...filtered].sort((a, b) => {
+      const normalize = (v: unknown) => (v ?? "") as string | number
+      let left: string | number
+      let right: string | number
+
+      if (sortKey === "status") {
+        left = a.permanentlyClosed ? 2 : a.temporarilyClosed ? 1 : 0
+        right = b.permanentlyClosed ? 2 : b.temporarilyClosed ? 1 : 0
+      } else if (sortKey === "leadScore") {
+        left = scoreWeight[a.leadScore] || 0
+        right = scoreWeight[b.leadScore] || 0
+      } else {
+        left = normalize(a[sortKey])
+        right = normalize(b[sortKey])
+      }
+
+      if (typeof left === "number" && typeof right === "number") {
+        return sortDirection === "asc" ? left - right : right - left
+      }
+
+      const result = String(left).localeCompare(String(right), undefined, {
+        numeric: true,
+        sensitivity: "base",
+      })
+      return sortDirection === "asc" ? result : -result
+    })
+
+    return sorted
+  }, [
+    results,
+    businessFilter,
+    categoryFilter,
+    minRating,
+    minReviews,
+    addressFilter,
+    phoneFilter,
+    priceFilter,
+    statusFilter,
+    leadFilter,
+    sortKey,
+    sortDirection,
+  ])
+
+  const totalPages = Math.max(1, Math.ceil(filteredAndSorted.length / pageSize))
+  const safePage = Math.min(page, totalPages)
+  const paginatedData = filteredAndSorted.slice((safePage - 1) * pageSize, safePage * pageSize)
+  const pageWindowSize = 5
+  const windowStart = Math.max(1, Math.min(safePage - Math.floor(pageWindowSize / 2), totalPages - pageWindowSize + 1))
+  const windowEnd = Math.min(totalPages, windowStart + pageWindowSize - 1)
+  const visiblePages = Array.from({ length: Math.max(0, windowEnd - windowStart + 1) }, (_, i) => windowStart + i)
+
+  useEffect(() => {
+    if (page !== safePage) {
+      onPageChange(safePage)
+    }
+  }, [page, safePage, onPageChange])
+
+  const toggleSort = (
+    key: "title" | "categoryName" | "totalScore" | "reviewsCount" | "address" | "phone" | "price" | "status" | "leadScore",
+  ) => {
+    if (sortKey === key) {
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"))
+      return
+    }
+
+    setSortKey(key)
+    setSortDirection("asc")
+  }
 
   const toggleRow = (id: string) => {
     setExpandedRows((prev) => {
@@ -380,15 +500,84 @@ export function DataTable({ results, page, pageSize, onPageChange }: DataTablePr
           <TableHeader>
             <TableRow className="border-border/50 bg-muted/30 hover:bg-muted/30">
               <TableHead className="w-8" />
-              <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Business</TableHead>
-              <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category</TableHead>
-              <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Rating</TableHead>
-              <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Reviews</TableHead>
-              <TableHead className="hidden text-xs font-semibold uppercase tracking-wider text-muted-foreground lg:table-cell">Address</TableHead>
-              <TableHead className="hidden text-xs font-semibold uppercase tracking-wider text-muted-foreground md:table-cell">Phone</TableHead>
-              <TableHead className="hidden text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground sm:table-cell">Price</TableHead>
-              <TableHead className="hidden text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground md:table-cell">Status</TableHead>
-              <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Lead</TableHead>
+              <TableHead className="sticky top-0 z-20 bg-muted/95 text-xs font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
+                <button type="button" className="inline-flex items-center gap-1" onClick={() => toggleSort("title")}>Business <ArrowUpDown className="h-3 w-3" /></button>
+              </TableHead>
+              <TableHead className="sticky top-0 z-20 bg-muted/95 text-xs font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
+                <button type="button" className="inline-flex items-center gap-1" onClick={() => toggleSort("categoryName")}>Category <ArrowUpDown className="h-3 w-3" /></button>
+              </TableHead>
+              <TableHead className="sticky top-0 z-20 bg-muted/95 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
+                <button type="button" className="inline-flex items-center gap-1" onClick={() => toggleSort("totalScore")}>Rating <ArrowUpDown className="h-3 w-3" /></button>
+              </TableHead>
+              <TableHead className="sticky top-0 z-20 bg-muted/95 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
+                <button type="button" className="inline-flex items-center gap-1" onClick={() => toggleSort("reviewsCount")}>Reviews <ArrowUpDown className="h-3 w-3" /></button>
+              </TableHead>
+              <TableHead className="sticky top-0 z-20 hidden bg-muted/95 text-xs font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm lg:table-cell">
+                <button type="button" className="inline-flex items-center gap-1" onClick={() => toggleSort("address")}>Address <ArrowUpDown className="h-3 w-3" /></button>
+              </TableHead>
+              <TableHead className="sticky top-0 z-20 hidden bg-muted/95 text-xs font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm md:table-cell">
+                <button type="button" className="inline-flex items-center gap-1" onClick={() => toggleSort("phone")}>Phone <ArrowUpDown className="h-3 w-3" /></button>
+              </TableHead>
+              <TableHead className="sticky top-0 z-20 hidden bg-muted/95 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm sm:table-cell">
+                <button type="button" className="inline-flex items-center gap-1" onClick={() => toggleSort("price")}>Price <ArrowUpDown className="h-3 w-3" /></button>
+              </TableHead>
+              <TableHead className="sticky top-0 z-20 hidden bg-muted/95 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm md:table-cell">
+                <button type="button" className="inline-flex items-center gap-1" onClick={() => toggleSort("status")}>Status <ArrowUpDown className="h-3 w-3" /></button>
+              </TableHead>
+              <TableHead className="sticky top-0 z-20 bg-muted/95 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
+                <button type="button" className="inline-flex items-center gap-1" onClick={() => toggleSort("leadScore")}>Lead <ArrowUpDown className="h-3 w-3" /></button>
+              </TableHead>
+            </TableRow>
+
+            <TableRow className="border-border/40 bg-background/95 hover:bg-background/95">
+              <TableHead className="sticky top-[41px] z-10 bg-background/95 backdrop-blur-sm" />
+              <TableHead className="sticky top-[41px] z-10 bg-background/95 backdrop-blur-sm">
+                <Input value={businessFilter} onChange={(e) => setBusinessFilter(e.target.value)} placeholder="Filter..." className="h-7 text-xs" />
+              </TableHead>
+              <TableHead className="sticky top-[41px] z-10 bg-background/95 backdrop-blur-sm">
+                <Input value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} placeholder="Filter..." className="h-7 text-xs" />
+              </TableHead>
+              <TableHead className="sticky top-[41px] z-10 bg-background/95 text-center backdrop-blur-sm">
+                <Input value={minRating} onChange={(e) => setMinRating(e.target.value)} placeholder="Min" className="h-7 text-xs" />
+              </TableHead>
+              <TableHead className="sticky top-[41px] z-10 bg-background/95 text-center backdrop-blur-sm">
+                <Input value={minReviews} onChange={(e) => setMinReviews(e.target.value)} placeholder="Min" className="h-7 text-xs" />
+              </TableHead>
+              <TableHead className="sticky top-[41px] z-10 hidden bg-background/95 backdrop-blur-sm lg:table-cell">
+                <Input value={addressFilter} onChange={(e) => setAddressFilter(e.target.value)} placeholder="Filter..." className="h-7 text-xs" />
+              </TableHead>
+              <TableHead className="sticky top-[41px] z-10 hidden bg-background/95 backdrop-blur-sm md:table-cell">
+                <Input value={phoneFilter} onChange={(e) => setPhoneFilter(e.target.value)} placeholder="Filter..." className="h-7 text-xs" />
+              </TableHead>
+              <TableHead className="sticky top-[41px] z-10 hidden bg-background/95 text-center backdrop-blur-sm sm:table-cell">
+                <Input value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)} placeholder="Filter..." className="h-7 text-xs" />
+              </TableHead>
+              <TableHead className="sticky top-[41px] z-10 hidden bg-background/95 backdrop-blur-sm md:table-cell">
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="h-7 text-xs">
+                    <SelectValue placeholder="All" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="open">Open</SelectItem>
+                    <SelectItem value="temporarily-closed">Temp Closed</SelectItem>
+                    <SelectItem value="permanently-closed">Closed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </TableHead>
+              <TableHead className="sticky top-[41px] z-10 bg-background/95 backdrop-blur-sm">
+                <Select value={leadFilter} onValueChange={setLeadFilter}>
+                  <SelectTrigger className="h-7 text-xs">
+                    <SelectValue placeholder="All" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="hot">Hot</SelectItem>
+                    <SelectItem value="warm">Warm</SelectItem>
+                    <SelectItem value="cold">Cold</SelectItem>
+                  </SelectContent>
+                </Select>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -456,21 +645,59 @@ export function DataTable({ results, page, pageSize, onPageChange }: DataTablePr
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-1">
+        <div className="flex flex-col gap-2 px-1 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {((page - 1) * pageSize) + 1}--{Math.min(page * pageSize, results.length)} of {results.length}
+            Showing {((safePage - 1) * pageSize) + 1}--{Math.min(safePage * pageSize, filteredAndSorted.length)} of {filteredAndSorted.length} • Page {safePage} of {totalPages}
           </p>
-          <div className="flex items-center gap-1.5">
-            <Button variant="outline" size="sm" className="rounded-lg bg-transparent" onClick={() => onPageChange(page - 1)} disabled={page <= 1}>
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-lg bg-transparent"
+              onClick={() => onPageChange(1)}
+              disabled={safePage <= 1}
+            >
+              First
+            </Button>
+            <Button variant="outline" size="sm" className="rounded-lg bg-transparent" onClick={() => onPageChange(safePage - 1)} disabled={safePage <= 1}>
               Previous
             </Button>
-            {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map((p) => (
-              <Button key={p} variant={p === page ? "default" : "outline"} size="sm" className="h-8 w-8 rounded-lg p-0" onClick={() => onPageChange(p)}>
+
+            {windowStart > 1 && (
+              <>
+                <Button variant="outline" size="sm" className="h-8 w-8 rounded-lg p-0" onClick={() => onPageChange(1)}>
+                  1
+                </Button>
+                {windowStart > 2 && <span className="px-1 text-xs text-muted-foreground">...</span>}
+              </>
+            )}
+
+            {visiblePages.map((p) => (
+              <Button key={p} variant={p === safePage ? "default" : "outline"} size="sm" className="h-8 w-8 rounded-lg p-0" onClick={() => onPageChange(p)}>
                 {p}
               </Button>
             ))}
-            <Button variant="outline" size="sm" className="rounded-lg bg-transparent" onClick={() => onPageChange(page + 1)} disabled={page >= totalPages}>
+
+            {windowEnd < totalPages && (
+              <>
+                {windowEnd < totalPages - 1 && <span className="px-1 text-xs text-muted-foreground">...</span>}
+                <Button variant="outline" size="sm" className="h-8 w-8 rounded-lg p-0" onClick={() => onPageChange(totalPages)}>
+                  {totalPages}
+                </Button>
+              </>
+            )}
+
+            <Button variant="outline" size="sm" className="rounded-lg bg-transparent" onClick={() => onPageChange(safePage + 1)} disabled={safePage >= totalPages}>
               Next
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-lg bg-transparent"
+              onClick={() => onPageChange(totalPages)}
+              disabled={safePage >= totalPages}
+            >
+              Last
             </Button>
           </div>
         </div>

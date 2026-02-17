@@ -32,11 +32,15 @@ export function MapView({ results }: MapViewProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstance = useRef<L.Map | null>(null)
   const markersRef = useRef<L.Marker[]>([])
+  const initInProgressRef = useRef(false)
   const [selectedBiz, setSelectedBiz] = useState<BusinessResult | null>(null)
   const [mapReady, setMapReady] = useState(false)
 
   useEffect(() => {
-    if (!mapRef.current || mapInstance.current) return
+    if (!mapRef.current || mapInstance.current || initInProgressRef.current) return
+
+    let cancelled = false
+    initInProgressRef.current = true
 
     // Dynamically import Leaflet to avoid SSR issues
     const initMap = async () => {
@@ -71,17 +75,26 @@ export function MapView({ results }: MapViewProps) {
         })
       }
 
-      if (!mapRef.current) return
+      if (!mapRef.current || cancelled) {
+        initInProgressRef.current = false
+        return
+      }
+
+      if ((mapRef.current as { _leaflet_id?: number })._leaflet_id) {
+        initInProgressRef.current = false
+        return
+      }
 
       // Calculate bounds from results
       const lats = results.map((r) => r.location.lat)
       const lngs = results.map((r) => r.location.lng)
-      const centerLat = lats.reduce((a, b) => a + b, 0) / lats.length
-      const centerLng = lngs.reduce((a, b) => a + b, 0) / lngs.length
+      const hasLocations = lats.length > 0 && lngs.length > 0
+      const centerLat = hasLocations ? lats.reduce((a, b) => a + b, 0) / lats.length : 20
+      const centerLng = hasLocations ? lngs.reduce((a, b) => a + b, 0) / lngs.length : 0
 
       const map = L.map(mapRef.current, {
         center: [centerLat, centerLng],
-        zoom: 12,
+        zoom: hasLocations ? 12 : 2,
         zoomControl: true,
         attributionControl: false,
       })
@@ -121,17 +134,32 @@ export function MapView({ results }: MapViewProps) {
         map.fitBounds(bounds, { padding: [40, 40] })
       }
 
+      if (cancelled) {
+        map.remove()
+        initInProgressRef.current = false
+        return
+      }
+
       mapInstance.current = map
       setMapReady(true)
+      initInProgressRef.current = false
     }
 
     initMap()
 
     return () => {
+      cancelled = true
+      initInProgressRef.current = false
+      for (const m of markersRef.current) m.remove()
+      markersRef.current = []
       if (mapInstance.current) {
         mapInstance.current.remove()
         mapInstance.current = null
       }
+      if (mapRef.current && "_leaflet_id" in mapRef.current) {
+        delete (mapRef.current as { _leaflet_id?: number })._leaflet_id
+      }
+      setMapReady(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

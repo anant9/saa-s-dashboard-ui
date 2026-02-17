@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Zap, CreditCard, Settings, LogOut, Coins } from "lucide-react"
+import { Zap, Settings, LogOut, Coins } from "lucide-react"
 
 export function Navbar() {
   const { user, signOut } = useAuth()
@@ -73,13 +73,13 @@ export function Navbar() {
                 Saved Searches
               </Button>
             </Link>
-            <Link href="/dashboard/billing">
+            <Link href="/dashboard/HEXOutboundLeadGen">
               <Button
                 variant="ghost"
                 size="sm"
                 className="h-8 rounded-lg px-3 text-sm font-medium text-muted-foreground hover:text-foreground"
               >
-                Billing
+                HEX Demo
               </Button>
             </Link>
           </nav>
@@ -132,9 +132,9 @@ export function Navbar() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="gap-2 rounded-lg" asChild>
-                <Link href="/dashboard/billing">
-                  <CreditCard className="h-4 w-4" />
-                  Billing
+                <Link href="/dashboard/HEXOutboundLeadGen">
+                  <Zap className="h-4 w-4" />
+                  HEX Demo
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />

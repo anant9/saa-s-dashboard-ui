@@ -34,7 +34,7 @@ export function ConfirmationModal({
   const handleConfirm = () => {
     if (!hasEnoughCredits) {
       toast.error("Insufficient credits", {
-        description: "Please upgrade your plan or purchase more credits.",
+        description: "Please reduce max results or try again later.",
       })
       return
     }
@@ -56,7 +56,7 @@ export function ConfirmationModal({
             Confirm Extraction
           </DialogTitle>
           <DialogDescription className="text-center">
-            Review the cost and parameters before running.
+            Review parameters before running.
           </DialogDescription>
         </DialogHeader>
 
@@ -99,7 +99,7 @@ export function ConfirmationModal({
                 "Rating & Reviews",
                 "Opening Hours",
                 "Coordinates & Place ID",
-                "Categories & Price",
+                "Categories & Attributes",
                 "Social Media Profiles",
                 "Claim & Closure Status",
               ].map((field) => (
@@ -111,23 +111,6 @@ export function ConfirmationModal({
             </div>
           </div>
 
-          <div className="my-1 h-px bg-border" />
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <Coins className="h-4 w-4" />
-              Estimated Cost
-            </div>
-            <span className="text-lg font-semibold text-primary">
-              {filter.costEstimate}
-            </span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Rate</span>
-            <span className="text-xs text-muted-foreground">
-              $10.00 per 1,000 results
-            </span>
-          </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Your Balance</span>
             <span className="font-medium text-foreground">
@@ -140,7 +123,7 @@ export function ConfirmationModal({
           <div className="flex items-center gap-2 rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
             <AlertTriangle className="h-4 w-4 shrink-0" />
             <span>
-              {"You don't have enough credits. Upgrade your plan to continue."}
+              {"You don't have enough credits to run this extraction."}
             </span>
           </div>
         )}

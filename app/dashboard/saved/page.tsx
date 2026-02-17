@@ -17,7 +17,6 @@ import {
   Search,
   MapPin,
   Clock,
-  DollarSign,
   Hash,
   Play,
   Trash2,
@@ -83,7 +82,7 @@ export default function SavedSearchesPage() {
         ) : (
           <div className="flex flex-col gap-6">
             {/* Stats cards */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Card className="border-border/50">
                 <CardContent className="flex items-center gap-4 p-4">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
@@ -108,19 +107,6 @@ export default function SavedSearchesPage() {
                   </div>
                 </CardContent>
               </Card>
-              <Card className="border-border/50">
-                <CardContent className="flex items-center gap-4 p-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                    <DollarSign className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-2xl font-bold text-foreground">
-                      ${savedSearches.reduce((sum, s) => sum + s.costAmount, 0).toFixed(2)}
-                    </span>
-                    <span className="text-xs text-muted-foreground">Total Spent</span>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
 
             {/* Table */}
@@ -131,7 +117,6 @@ export default function SavedSearchesPage() {
                     <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Search Name</TableHead>
                     <TableHead className="hidden text-xs font-semibold uppercase tracking-wider text-muted-foreground md:table-cell">Query</TableHead>
                     <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Results</TableHead>
-                    <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cost</TableHead>
                     <TableHead className="hidden text-xs font-semibold uppercase tracking-wider text-muted-foreground sm:table-cell">Date</TableHead>
                     <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</TableHead>
                     <TableHead className="text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">Actions</TableHead>
@@ -154,9 +139,6 @@ export default function SavedSearchesPage() {
                       </TableCell>
                       <TableCell className="text-center">
                         <span className="font-mono text-sm font-medium text-foreground">{search.resultsCount.toLocaleString()}</span>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <span className="font-mono text-sm text-muted-foreground">${search.costAmount.toFixed(2)}</span>
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">

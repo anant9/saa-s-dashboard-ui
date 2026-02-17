@@ -29,6 +29,7 @@ interface DashboardContextType {
   pendingFilter: ExtractionFilter | null
   savedSearches: SavedSearch[]
   sendMessage: (content: string) => void
+  importExtractionFromJson: (payload: unknown) => void
   confirmExtraction: (filter?: ExtractionFilter) => void
   cancelExtraction: () => void
   openConfirmation: () => void
@@ -313,6 +314,102 @@ export function DashboardProvider({
     })
   }, [])
 
+  const parseImportedPayload = useCallback((payload: unknown) => {
+    const isRecord = (value: unknown): value is Record<string, unknown> =>
+      typeof value === "object" && value !== null
+
+    if (Array.isArray(payload)) {
+      return {
+        results: payload,
+        declaredTotal: payload.length,
+      }
+    }
+
+    if (!isRecord(payload)) {
+      throw new Error("Imported JSON must be an object or array")
+    }
+
+    const rootResults = Array.isArray(payload.results) ? payload.results : null
+
+    const data = isRecord(payload.data) ? payload.data : null
+    const dataResults = data && Array.isArray(data.results) ? data.results : null
+
+    const extractionNode = isRecord(payload.extraction) ? payload.extraction : null
+    const extractionResults =
+      extractionNode && Array.isArray(extractionNode.results)
+        ? extractionNode.results
+        : null
+
+    const extractedResults = rootResults || dataResults || extractionResults
+    if (!extractedResults) {
+      throw new Error("Could not find a results array in imported JSON")
+    }
+
+    const rootTotal = typeof payload.total_results === "number"
+      ? payload.total_results
+      : typeof payload.totalResults === "number"
+        ? payload.totalResults
+        : null
+
+    return {
+      results: extractedResults,
+      declaredTotal: rootTotal ?? extractedResults.length,
+    }
+  }, [])
+
+  const applyExtractionResults = useCallback((
+    rawResults: Awaited<ReturnType<typeof searchBusinesses>>["results"],
+    successMessage: string,
+  ) => {
+    const results = mapSearchResults(rawResults)
+    const count = results.length
+    const cost = count * PRICE_PER_RESULT
+
+    setExtraction({
+      id: `ext_${Date.now()}`,
+      totalResults: count,
+      creditsUsed: count,
+      costAmount: cost,
+      results,
+      status: "success",
+    })
+
+    const doneMsg: ChatMessage = {
+      id: genId(),
+      role: "assistant",
+      content: successMessage,
+      timestamp: new Date(),
+    }
+    setMessages((prev) => [...prev, doneMsg])
+  }, [mapSearchResults])
+
+  const importExtractionFromJson = useCallback((payload: unknown) => {
+    const isRecord = (value: unknown): value is Record<string, unknown> =>
+      typeof value === "object" && value !== null
+
+    const { results: rawCandidates, declaredTotal } = parseImportedPayload(payload)
+
+    const safeRawResults = rawCandidates.filter(
+      (item): item is Awaited<ReturnType<typeof searchBusinesses>>["results"][number] =>
+        isRecord(item),
+    )
+
+    applyExtractionResults(
+      safeRawResults,
+      `Imported ${safeRawResults.length} businesses from JSON.`,
+    )
+
+    if (typeof declaredTotal === "number" && declaredTotal !== safeRawResults.length) {
+      const noteMsg: ChatMessage = {
+        id: genId(),
+        role: "assistant",
+        content: `Imported ${safeRawResults.length} valid records (source declared ${declaredTotal}).`,
+        timestamp: new Date(),
+      }
+      setMessages((prev) => [...prev, noteMsg])
+    }
+  }, [applyExtractionResults, parseImportedPayload])
+
   const openConfirmation = useCallback(() => {
     setShowConfirmation(true)
   }, [])
@@ -334,26 +431,10 @@ export function DashboardProvider({
     try {
       const naturalQuery = activeFilter.searchQuery
       const response = await searchBusinesses(naturalQuery, activeFilter.maxResults)
-      const results = mapSearchResults(response.results)
-      const count = results.length
-      const cost = count * PRICE_PER_RESULT
-
-      setExtraction({
-        id: `ext_${Date.now()}`,
-        totalResults: count,
-        creditsUsed: count,
-        costAmount: cost,
-        results,
-        status: "success",
-      })
-
-      const doneMsg: ChatMessage = {
-        id: genId(),
-        role: "assistant",
-        content: `Here are your results — ${count} businesses shown on the right side.`,
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, doneMsg])
+      applyExtractionResults(
+        response.results,
+        `Here are your results — ${response.results.length} businesses shown on the right side.`,
+      )
     } catch (error) {
       const message = error instanceof Error ? error.message : "Failed to fetch results"
       setExtraction({
@@ -374,7 +455,7 @@ export function DashboardProvider({
       }
       setMessages((prev) => [...prev, errorMsg])
     }
-  }, [pendingFilter, pendingQueryText, mapSearchResults])
+  }, [pendingFilter, pendingQueryText, applyExtractionResults])
 
   const sendMessage = useCallback(async (content: string) => {
     const normalized = content.trim().toLowerCase()
@@ -484,6 +565,7 @@ export function DashboardProvider({
         pendingFilter,
         savedSearches,
         sendMessage,
+        importExtractionFromJson,
         confirmExtraction,
         cancelExtraction,
         openConfirmation,

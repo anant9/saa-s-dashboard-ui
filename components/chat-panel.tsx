@@ -1,15 +1,22 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, type ChangeEvent } from "react"
 import { useDashboard } from "@/lib/dashboard-context"
 import { ChatMessage } from "@/components/chat-message"
 import { ChatInput } from "@/components/chat-input"
 import { TypingIndicator } from "@/components/typing-indicator"
-import { BrainCircuit, Sparkles } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { BrainCircuit, FileJson2, PanelLeftClose, Sparkles } from "lucide-react"
+import { toast } from "sonner"
 
-export function ChatPanel() {
-  const { messages, isTyping } = useDashboard()
+interface ChatPanelProps {
+  onCollapse?: () => void
+}
+
+export function ChatPanel({ onCollapse }: ChatPanelProps) {
+  const { messages, isTyping, importExtractionFromJson } = useDashboard()
   const scrollRef = useRef<HTMLDivElement>(null)
+  const importInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -19,6 +26,33 @@ export function ChatPanel() {
       })
     }
   }, [messages, isTyping])
+
+  const handleImportClick = () => {
+    importInputRef.current?.click()
+  }
+
+  const handleImportFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    try {
+      const text = await file.text()
+      const parsed = JSON.parse(text)
+      importExtractionFromJson(parsed)
+      toast.success("JSON imported", {
+        description: `Loaded extraction results from ${file.name}.`,
+      })
+    } catch (error) {
+      const message = error instanceof Error
+        ? error.message
+        : "Invalid JSON file."
+      toast.error("Import failed", {
+        description: message,
+      })
+    } finally {
+      event.target.value = ""
+    }
+  }
 
   return (
     <div className="flex h-full flex-col">
@@ -36,6 +70,37 @@ export function ChatPanel() {
         <span className="rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
           Online
         </span>
+        {onCollapse && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="ml-auto hidden h-7 w-7 rounded-lg p-0 lg:inline-flex"
+            onClick={onCollapse}
+            aria-label="Collapse chat panel"
+            title="Collapse chat panel"
+          >
+            <PanelLeftClose className="h-4 w-4" />
+          </Button>
+        )}
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="h-7 gap-1.5 rounded-lg px-2.5 text-[11px]"
+          onClick={handleImportClick}
+        >
+          <FileJson2 className="h-3.5 w-3.5" />
+          Import JSON
+        </Button>
+        <input
+          ref={importInputRef}
+          type="file"
+          accept="application/json,.json"
+          className="hidden"
+          onChange={handleImportFile}
+          aria-label="Import extraction JSON"
+        />
       </div>
 
       <div

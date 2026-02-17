@@ -10,7 +10,6 @@ import {
   Search,
   BarChart3,
   MapPin,
-  Shield,
   ArrowRight,
   Star,
   Globe,
@@ -30,7 +29,6 @@ import {
   CircuitBoard,
   Map,
   Link2,
-  Check,
   Mail,
 } from "lucide-react"
 
@@ -133,7 +131,7 @@ function AIDemoTerminal() {
           </div>
           <div className="flex items-center gap-2 text-primary font-medium">
             <Sparkles className="h-3.5 w-3.5" />
-            <span>{"Extracted 200 results with 34 data fields each -- $2.00 total"}</span>
+            <span>{"Extracted 200 results with 34 data fields each"}</span>
             <span className="cursor-blink ml-1 inline-block h-4 w-0.5 bg-primary" />
           </div>
         </div>
@@ -315,7 +313,7 @@ const dataPoints = [
   { icon: Star, label: "Rating & Reviews" },
   { icon: Clock, label: "Opening Hours" },
   { icon: Navigation, label: "Lat/Lng Coordinates" },
-  { icon: FileSpreadsheet, label: "Category & Price" },
+  { icon: FileSpreadsheet, label: "Category & Attributes" },
 ]
 
 const features = [
@@ -337,7 +335,7 @@ const features = [
   {
     icon: CircuitBoard,
     title: "30+ Enriched Data Fields",
-    description: "Every place is enriched with emails, social profiles, opening hours, review distribution, photos, price level, accessibility info, and more.",
+    description: "Every place is enriched with emails, social profiles, opening hours, review distribution, photos, accessibility info, and more.",
   },
   {
     icon: Link2,
@@ -345,9 +343,9 @@ const features = [
     description: "Push extracted leads straight to Salesforce, HubSpot, Zoho, Pipedrive, or Close CRM with one click. No manual import, no CSV juggling.",
   },
   {
-    icon: Shield,
-    title: "Transparent $10 / 1,000 Results",
-    description: "Only pay for what you extract at $10 per 1,000 results. See exact costs upfront before every run. No hidden fees, no per-query charges.",
+    icon: Sparkles,
+    title: "Demo-Ready Experience",
+    description: "Show the full extraction flow end-to-end, including AI parsing, enriched fields, map visualization, and one-click CRM handoff.",
   },
 ]
 
@@ -375,44 +373,8 @@ const steps = [
 const stats = [
   { value: "70K+", label: "Users worldwide" },
   { value: "30+", label: "Data fields per place" },
-  { value: "$10", label: "Per 1,000 results" },
+  { value: "5", label: "CRM connectors" },
   { value: "<3s", label: "AI query parsing" },
-]
-
-const pricingPlans = [
-  {
-    name: "Starter",
-    price: "Free",
-    period: "",
-    description: "For testing and small projects",
-    results: "250 results/month",
-    features: ["CSV & JSON export", "30+ data fields", "Email scraping", "Community support"],
-  },
-  {
-    name: "Growth",
-    price: "$49",
-    period: "/mo",
-    description: "For growing teams and agencies",
-    results: "5,000 results/month",
-    popular: true,
-    features: ["All export formats", "Email + Social scraping", "Review detail scraping", "2 CRM connectors", "Saved searches", "Priority support"],
-  },
-  {
-    name: "Business",
-    price: "$149",
-    period: "/mo",
-    description: "For high-volume lead generation",
-    results: "20,000 results/month",
-    features: ["Full data enrichment", "All 5 CRM connectors", "Review scraping (50/place)", "API access", "Dedicated support", "Custom field mapping"],
-  },
-  {
-    name: "Enterprise",
-    price: "$399",
-    period: "/mo",
-    description: "For large-scale operations",
-    results: "100,000 results/month",
-    features: ["White-label exports", "Custom CRM integrations", "Bulk extraction queue", "SLA guarantee", "Dedicated account manager", "Webhook notifications"],
-  },
 ]
 
 export default function HomePage() {
@@ -422,6 +384,11 @@ export default function HomePage() {
   const handleGetStarted = () => {
     signIn()
     router.push("/dashboard")
+  }
+
+  const handleHexDemo = () => {
+    signIn()
+    router.push("/dashboard/HEXOutboundLeadGen")
   }
 
   return (
@@ -438,6 +405,10 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <Button variant="outline" size="sm" className="hidden h-8 rounded-lg px-3 text-sm font-medium md:inline-flex" onClick={handleHexDemo}>
+              <CircuitBoard className="h-3.5 w-3.5" />
+              HEX Demo
+            </Button>
             <Button variant="ghost" size="sm" className="h-8 rounded-lg px-3 text-sm font-medium text-muted-foreground hover:text-foreground" onClick={handleGetStarted}>
               Sign in
             </Button>
@@ -488,8 +459,12 @@ export default function HomePage() {
                 <GoogleIcon className="h-4 w-4" />
                 Continue with Google
               </Button>
+              <Button variant="outline" size="lg" className="h-12 gap-2.5 rounded-xl border-border/70 bg-transparent px-6 text-sm font-medium hover:bg-accent" onClick={handleHexDemo}>
+                <CircuitBoard className="h-4 w-4" />
+                Open HEX Demo
+              </Button>
             </div>
-            <p className="mt-4 text-xs text-muted-foreground">No credit card required. Free credits on signup.</p>
+            <p className="mt-4 text-xs text-muted-foreground">Instant access with demo-ready data extraction workflows.</p>
           </div>
 
           {/* Live AI demo terminal */}
@@ -544,7 +519,7 @@ export default function HomePage() {
               { feature: "Results per search", google: "60 (API) / 120 (UI)", ours: "Unlimited", highlight: true },
               { feature: "Data fields", google: "~8 basic fields", ours: "30+ enriched fields", highlight: false },
               { feature: "Email & social scraping", google: "Not available", ours: "Included", highlight: false },
-              { feature: "Cost for 1K results", google: "~$350 (API fees)", ours: "$10 flat", highlight: true },
+              { feature: "Extraction workflow", google: "Manual setup", ours: "AI agent guided", highlight: true },
               { feature: "Geo-zone splitting", google: "Manual only", ours: "Auto (AI agent)", highlight: false },
               { feature: "CRM integration", google: "None", ours: "5 connectors", highlight: false },
               { feature: "Export formats", google: "Copy-paste", ours: "CSV, Excel, JSON", highlight: false },
@@ -569,8 +544,8 @@ export default function HomePage() {
             </div>
             <p className="text-sm leading-relaxed text-muted-foreground">
               One natural language query. All matching results with 30+ fields.
-              <span className="font-semibold text-primary"> 35x cheaper</span> than the Google Maps API with
-              <span className="font-semibold text-primary"> 5x more data</span> per result.
+              <span className="font-semibold text-primary"> Faster setup</span> with
+              <span className="font-semibold text-primary"> richer output</span> per result.
             </p>
           </div>
         </div>
@@ -649,7 +624,7 @@ export default function HomePage() {
             {[
               "Place ID", "Postal Code", "State / Region", "Neighborhood",
               "Claim Status", "Closed Status", "Photos Count", "Review Tags",
-              "Gas Prices", "Accessibility", "People Also Search", "Google Food URL",
+              "Fuel Metrics", "Accessibility", "People Also Search", "Google Food URL",
               "Review Distribution", "Social Profiles", "Email Addresses", "Plus Code",
             ].map((tag) => (
               <span key={tag} className="inline-flex items-center gap-1 rounded-md border border-border/40 bg-muted/50 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
@@ -765,66 +740,6 @@ export default function HomePage() {
                   <h3 className="text-sm font-semibold text-foreground">{step.title}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">{step.description}</p>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ====== PRICING ====== */}
-      <section className="border-y border-border/50 bg-card/30 py-20 lg:py-28">
-        <div className="mx-auto max-w-6xl px-4 lg:px-6">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-balance text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              Simple, transparent pricing
-            </h2>
-            <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Pay only for results you extract. $10 per 1,000 results. No hidden fees.
-            </p>
-          </div>
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {pricingPlans.map((plan) => (
-              <div
-                key={plan.name}
-                className={`group relative flex flex-col overflow-hidden rounded-2xl border bg-card p-6 transition-all hover:shadow-lg ${
-                  plan.popular
-                    ? "border-primary/40 shadow-lg shadow-primary/10"
-                    : "border-border/50 hover:border-primary/20 hover:shadow-primary/5"
-                }`}
-              >
-                {plan.popular && (
-                  <div className="gradient-border absolute inset-x-0 top-0 h-[2px]" />
-                )}
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-foreground">{plan.name}</h3>
-                    {plan.popular && (
-                      <Badge className="rounded-md bg-primary/15 px-1.5 py-0 text-[9px] font-semibold text-primary">Popular</Badge>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground">{plan.description}</p>
-                </div>
-                <div className="mt-4 flex items-baseline gap-0.5">
-                  <span className="text-3xl font-bold tracking-tight text-foreground">{plan.price}</span>
-                  {plan.period && <span className="text-sm text-muted-foreground">{plan.period}</span>}
-                </div>
-                <p className="mt-1 text-xs font-medium text-primary">{plan.results}</p>
-                <div className="mt-6 flex flex-col gap-2.5">
-                  {plan.features.map((f) => (
-                    <div key={f} className="flex items-start gap-2 text-xs text-muted-foreground">
-                      <Check className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
-                      <span>{f}</span>
-                    </div>
-                  ))}
-                </div>
-                <Button
-                  variant={plan.popular ? "default" : "outline"}
-                  size="sm"
-                  className={`mt-6 w-full rounded-xl text-xs ${!plan.popular ? "bg-transparent" : ""}`}
-                  onClick={handleGetStarted}
-                >
-                  {plan.price === "Free" ? "Get Started Free" : "Start Free Trial"}
-                </Button>
               </div>
             ))}
           </div>

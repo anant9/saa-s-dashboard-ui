@@ -18,7 +18,6 @@ import {
   Mail,
   Share2,
   MessageSquare,
-  DollarSign,
 } from "lucide-react"
 
 interface FilterCardProps {
@@ -41,7 +40,6 @@ export function FilterCard({ filter }: FilterCardProps) {
     { icon: Mail, label: "Scrape Emails", value: filter.scrapeEmails ? "Yes" : "No" },
     { icon: Share2, label: "Scrape Social", value: filter.scrapeSocialMedia ? "Yes" : "No" },
     { icon: MessageSquare, label: "Review Details", value: filter.scrapeReviewsDetail ? `Yes (max ${filter.maxReviews})` : "No" },
-    { icon: DollarSign, label: "Cost Estimate", value: filter.costEstimate },
   ]
 
   return (
