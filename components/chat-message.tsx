@@ -19,6 +19,9 @@ function formatMessageTime(timestamp: Date) {
 
 export function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === "user"
+  const hasSuggestions = !isUser
+    && Array.isArray(message.suggestedQueries)
+    && message.suggestedQueries.length > 0
 
   return (
     <div
@@ -63,6 +66,26 @@ export function ChatMessage({ message }: ChatMessageProps) {
         >
           {message.content}
         </div>
+
+        {hasSuggestions && (
+          <div className="flex max-w-full flex-wrap gap-2 px-1">
+            {message.suggestedQueries?.map((suggestion) => (
+              <button
+                key={suggestion}
+                type="button"
+                className="rounded-md border border-border/70 bg-background px-2.5 py-1.5 text-left text-xs text-foreground transition-colors hover:border-primary/40 hover:bg-accent"
+                onClick={() => {
+                  const event = new CustomEvent("suggestion-click", {
+                    detail: suggestion,
+                  })
+                  window.dispatchEvent(event)
+                }}
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
+        )}
 
 
         <span suppressHydrationWarning className="px-1 text-[10px] text-muted-foreground">

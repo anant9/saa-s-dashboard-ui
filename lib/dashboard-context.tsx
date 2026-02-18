@@ -53,7 +53,7 @@ const WELCOME_MSG: ChatMessage = {
   id: "welcome",
   role: "assistant",
   content:
-    "Hi! How can I help you? ",
+    "Share a search query directly, or enter a business website URL to get suggested lead-gen queries.",
   timestamp: new Date(),
 }
 
@@ -431,6 +431,37 @@ export function DashboardProvider({
     try {
       const naturalQuery = activeFilter.searchQuery
       const response = await searchBusinesses(naturalQuery, activeFilter.maxResults)
+
+      const isWebsiteSuggestionResponse =
+        response.query?.type === "website_query_suggestions"
+
+      if (isWebsiteSuggestionResponse) {
+        const suggestedQueries = Array.isArray(response.query?.suggested_queries)
+          ? response.query.suggested_queries.filter((entry): entry is string => typeof entry === "string" && entry.trim().length > 0)
+          : []
+
+        setExtraction({
+          id: `ext_${Date.now()}`,
+          totalResults: 0,
+          creditsUsed: 0,
+          costAmount: 0,
+          results: [],
+          status: "idle",
+        })
+
+        const assistantMsg: ChatMessage = {
+          id: genId(),
+          role: "assistant",
+          content: suggestedQueries.length > 0
+            ? "I found website-based search suggestions. Pick one to run next."
+            : "I could not generate suggestions from that website. Try another website or enter a search query directly.",
+          timestamp: new Date(),
+          suggestedQueries,
+        }
+        setMessages((prev) => [...prev, assistantMsg])
+        return
+      }
+
       applyExtractionResults(
         response.results,
         `Here are your results — ${response.results.length} businesses shown on the right side.`,

@@ -120,8 +120,8 @@ export function ChatPanel({ onCollapse }: ChatPanelProps) {
                 AI Agent Ready
               </h3>
               <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-                Describe the businesses you want to extract in natural language.
-                The agent will parse your intent and configure extraction automatically.
+                Enter a search query directly, or paste a business website URL
+                to generate lead query suggestions for the next run.
               </p>
             </div>
             <div className="flex flex-col gap-2">

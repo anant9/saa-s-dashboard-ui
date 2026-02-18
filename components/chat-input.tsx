@@ -76,12 +76,21 @@ export function ChatInput() {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail as string
       if (detail && !isDisabled) {
-        sendMessage(detail)
+        const nextValue = detail.slice(0, MAX_CHARS)
+        setValue(nextValue)
+
+        requestAnimationFrame(() => {
+          if (textareaRef.current) {
+            textareaRef.current.focus()
+            textareaRef.current.style.height = "auto"
+            textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`
+          }
+        })
       }
     }
     window.addEventListener("suggestion-click", handler)
     return () => window.removeEventListener("suggestion-click", handler)
-  }, [isDisabled, sendMessage])
+  }, [isDisabled])
 
   const handleSubmit = useCallback(() => {
     const trimmed = value.trim()

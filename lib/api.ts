@@ -87,7 +87,14 @@ export interface BusinessResponse {
 export interface SearchResultsResponse {
   total_results: number
   results: BusinessResponse[]
-  query: Record<string, unknown>
+  query: {
+    query?: string
+    type?: string
+    website_url?: string
+    language?: string
+    suggested_queries?: string[]
+    [key: string]: unknown
+  }
 }
 
 export interface AgentHistoryMessage {

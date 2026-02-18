@@ -12,6 +12,7 @@ export interface ChatMessage {
   content: string
   timestamp: Date
   filterCard?: ExtractionFilter
+  suggestedQueries?: string[]
 }
 
 export interface ExtractionFilter {
