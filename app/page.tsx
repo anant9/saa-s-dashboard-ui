@@ -318,34 +318,19 @@ const dataPoints = [
 
 const features = [
   {
-    icon: BrainCircuit,
-    title: "AI Agent Understands Plain English",
-    description: "No query syntax needed. Our AI agent interprets your natural language and converts it into precise extraction parameters automatically.",
+    icon: Globe,
+    title: "🌍 Multilingual Prompts",
+    description: "Search in any language and ExtractAI auto-detects intent, so global lead discovery feels instant and frictionless.",
   },
   {
-    icon: Map,
-    title: "Interactive Map Visualization",
-    description: "See every extracted business plotted on a live map with color-coded lead scoring. Click any pin to see full details, ratings, and contact info.",
-  },
-  {
-    icon: Workflow,
-    title: "Autonomous Extraction Pipeline",
-    description: "The AI agent orchestrates the entire workflow: parse query, configure extraction, fetch data, enrich fields, score leads, and deliver structured results.",
-  },
-  {
-    icon: CircuitBoard,
-    title: "30+ Enriched Data Fields",
-    description: "Every place is enriched with emails, social profiles, opening hours, review distribution, photos, accessibility info, and more.",
+    icon: Bot,
+    title: "🎙️ Voice Mode",
+    description: "Speak naturally to run conversational lead research faster and move from idea to qualified prospects in seconds.",
   },
   {
     icon: Link2,
-    title: "Direct CRM Integration",
-    description: "Push extracted leads straight to Salesforce, HubSpot, Zoho, Pipedrive, or Close CRM with one click. No manual import, no CSV juggling.",
-  },
-  {
-    icon: Sparkles,
-    title: "Demo-Ready Experience",
-    description: "Show the full extraction flow end-to-end, including AI parsing, enriched fields, map visualization, and one-click CRM handoff.",
+    title: "🌐 Website → Smart Queries",
+    description: "Paste a company website and get AI-generated lead-search prompts instantly for smarter, higher-signal prospecting.",
   },
 ]
 
@@ -445,9 +430,10 @@ export default function HomePage() {
               </span>
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Google Maps was never built for bulk extraction. Our AI agent goes beyond native limits
-              -- extract <span className="font-semibold text-foreground">unlimited results</span> with
-              30+ enriched data fields, visualize on a live map, and push leads directly to your CRM.
+              Premium AI for modern prospecting: <span className="font-semibold text-foreground">Multilingual Prompts</span>
+              for global lead discovery, <span className="font-semibold text-foreground">Voice Mode</span> for faster
+              conversational research, and <span className="font-semibold text-foreground">Website → Smart Queries</span>
+              to turn any company URL into high-signal lead-search prompts instantly.
             </p>
             <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
               <Button size="lg" className="h-12 gap-2.5 rounded-xl px-6 text-sm font-medium shadow-lg shadow-primary/20" onClick={handleGetStarted}>
@@ -464,7 +450,7 @@ export default function HomePage() {
                 Open HEX Demo
               </Button>
             </div>
-            <p className="mt-4 text-xs text-muted-foreground">Instant access with demo-ready data extraction workflows.</p>
+            <p className="mt-4 text-xs text-muted-foreground">Research faster, prospect smarter, and scale globally from a single AI workflow.</p>
           </div>
 
           {/* Live AI demo terminal */}
@@ -640,11 +626,15 @@ export default function HomePage() {
       <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-6xl px-4 lg:px-6">
           <div className="mx-auto max-w-2xl text-center">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/5 px-3 py-1 text-[11px] font-medium text-primary">
+              <Sparkles className="h-3 w-3" />
+              Premium AI Capabilities
+            </div>
             <h2 className="text-balance text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              Built for AI-powered lead generation at scale
+              Faster research. Smarter prospecting. Global by default.
             </h2>
             <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Let the AI agent handle extraction complexity. You focus on closing deals.
+              Three premium AI experiences designed to help revenue teams discover better leads with less effort.
             </p>
           </div>
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
