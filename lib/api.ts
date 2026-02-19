@@ -126,6 +126,37 @@ export interface AgentChatResponse {
   clarificationQuestion?: string
 }
 
+export interface SalesforceConnectedAppConfig {
+  loginUrl: string
+  clientId: string
+  clientSecret: string
+  username: string
+  password: string
+  securityToken: string
+  apiVersion?: string
+}
+
+export interface SalesforceTestConnectionResponse {
+  ok: boolean
+  message?: string
+  instanceUrl?: string
+  orgId?: string
+  userId?: string
+}
+
+export interface SalesforcePushLeadsResponse {
+  ok: boolean
+  message?: string
+  total?: number
+  successCount?: number
+  failedCount?: number
+  jobId?: string
+  errors?: Array<{
+    index?: number
+    message: string
+  }>
+}
+
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"
 
@@ -208,6 +239,52 @@ export async function chatWithAgent(
     body: JSON.stringify({
       message,
       history,
+    }),
+  })
+
+  if (!response.ok) {
+    const text = await response.text()
+    throw new Error(parseApiError(text, response.status))
+  }
+
+  return response.json()
+}
+
+export async function testSalesforceConnection(
+  config: SalesforceConnectedAppConfig,
+): Promise<SalesforceTestConnectionResponse> {
+  const url = new URL("/api/v1/crm/salesforce/test-connection", API_BASE_URL)
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ config }),
+  })
+
+  if (!response.ok) {
+    const text = await response.text()
+    throw new Error(parseApiError(text, response.status))
+  }
+
+  return response.json()
+}
+
+export async function pushLeadsToSalesforce(
+  config: SalesforceConnectedAppConfig,
+  leads: Array<Record<string, unknown>>,
+): Promise<SalesforcePushLeadsResponse> {
+  const url = new URL("/api/v1/crm/salesforce/push-leads", API_BASE_URL)
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      config,
+      leads,
     }),
   })
 

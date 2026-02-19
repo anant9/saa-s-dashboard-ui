@@ -50,6 +50,11 @@ import {
 } from "lucide-react"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
+import {
+  pushLeadsToSalesforce,
+  testSalesforceConnection,
+  type SalesforceConnectedAppConfig,
+} from "@/lib/api"
 
 const CRM_CONNECTORS = [
   { id: "salesforce", name: "Salesforce", icon: "SF", color: "bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500/30" },
@@ -129,6 +134,30 @@ function toCsv(rows: Record<string, unknown>[]) {
   return lines.join("\n")
 }
 
+function toSalesforceLeadPayload(results: BusinessResult[]) {
+  return results.map((biz) => ({
+    company: biz.title,
+    website: biz.website || undefined,
+    phone: biz.phone || undefined,
+    street: biz.street || undefined,
+    city: biz.city || undefined,
+    state: biz.state || undefined,
+    postalCode: biz.postalCode || undefined,
+    country: biz.countryCode || undefined,
+    description: [
+      biz.categoryName ? `Category: ${biz.categoryName}` : "",
+      Number.isFinite(biz.totalScore) ? `Rating: ${biz.totalScore}` : "",
+      Number.isFinite(biz.reviewsCount) ? `Reviews: ${biz.reviewsCount}` : "",
+      biz.url ? `Google Maps: ${biz.url}` : "",
+      biz.placeId ? `Place ID: ${biz.placeId}` : "",
+      biz.leadScore ? `Lead Score: ${biz.leadScore}` : "",
+    ].filter(Boolean).join(" | "),
+    sourceSystem: "SAA Dashboard",
+    sourceRecordId: biz.id,
+    rawData: biz,
+  }))
+}
+
 export function ResultsPanel({
   demoMode = false,
   buyerSegmentsLabel,
@@ -142,6 +171,18 @@ export function ResultsPanel({
   const [crmDialogOpen, setCrmDialogOpen] = useState(false)
   const [selectedCrm, setSelectedCrm] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>("table")
+  const [salesforceConfig, setSalesforceConfig] = useState<SalesforceConnectedAppConfig>({
+    loginUrl: "https://login.salesforce.com",
+    clientId: "",
+    clientSecret: "",
+    username: "",
+    password: "",
+    securityToken: "",
+    apiVersion: "v61.0",
+  })
+  const [isTestingSalesforce, setIsTestingSalesforce] = useState(false)
+  const [isSyncingSalesforce, setIsSyncingSalesforce] = useState(false)
+  const [salesforceConnectionOk, setSalesforceConnectionOk] = useState(false)
 
   const filteredResults = useMemo(() => {
     const query = searchTerm.trim().toLowerCase()
@@ -221,11 +262,108 @@ export function ResultsPanel({
 
   const handleCrmConnect = (crmId: string) => {
     setSelectedCrm(crmId)
+    if (crmId === "salesforce") {
+      setSalesforceConnectionOk(false)
+    }
     setCrmDialogOpen(true)
   }
 
-  const handleCrmSync = () => {
+  const updateSalesforceField = (
+    field: keyof SalesforceConnectedAppConfig,
+    value: string,
+  ) => {
+    setSalesforceConfig((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
+    setSalesforceConnectionOk(false)
+  }
+
+  const validateSalesforceConfig = () => {
+    const requiredFields: Array<keyof SalesforceConnectedAppConfig> = [
+      "loginUrl",
+      "clientId",
+      "clientSecret",
+      "username",
+      "password",
+      "securityToken",
+    ]
+
+    for (const field of requiredFields) {
+      if (!salesforceConfig[field]?.trim()) {
+        throw new Error(`Please provide Salesforce ${field}.`)
+      }
+    }
+  }
+
+  const handleSalesforceTestConnection = async () => {
+    try {
+      validateSalesforceConfig()
+      setIsTestingSalesforce(true)
+      const response = await testSalesforceConnection(salesforceConfig)
+      setSalesforceConnectionOk(Boolean(response.ok))
+
+      if (response.ok) {
+        toast.success("Salesforce connection successful", {
+          description: response.message || "Connected app credentials are valid.",
+        })
+      } else {
+        toast.error("Salesforce connection failed", {
+          description: response.message || "Please review your connected app values.",
+        })
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not test Salesforce connection."
+      setSalesforceConnectionOk(false)
+      toast.error("Salesforce connection failed", {
+        description: message,
+      })
+    } finally {
+      setIsTestingSalesforce(false)
+    }
+  }
+
+  const handleCrmSync = async () => {
     const crm = CRM_CONNECTORS.find((c) => c.id === selectedCrm)
+
+    if (selectedCrm === "salesforce") {
+      try {
+        validateSalesforceConfig()
+        setIsSyncingSalesforce(true)
+
+        if (!salesforceConnectionOk) {
+          const testResponse = await testSalesforceConnection(salesforceConfig)
+          if (!testResponse.ok) {
+            throw new Error(testResponse.message || "Salesforce connection test failed.")
+          }
+          setSalesforceConnectionOk(true)
+        }
+
+        const payload = toSalesforceLeadPayload(extraction.results)
+        const response = await pushLeadsToSalesforce(salesforceConfig, payload)
+
+        if (!response.ok) {
+          throw new Error(response.message || "Salesforce sync failed.")
+        }
+
+        toast.success("Salesforce sync complete", {
+          description: response.message
+            || `Pushed ${response.successCount ?? extraction.totalResults} leads to Salesforce.`,
+        })
+
+        setCrmDialogOpen(false)
+        setSelectedCrm(null)
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Could not push leads to Salesforce."
+        toast.error("Salesforce sync failed", {
+          description: message,
+        })
+      } finally {
+        setIsSyncingSalesforce(false)
+      }
+      return
+    }
+
     toast.success(`Syncing to ${crm?.name}`, {
       description: `Pushing ${extraction.totalResults} leads to ${crm?.name}...`,
     })
@@ -475,7 +613,7 @@ export function ResultsPanel({
 
       {/* CRM Sync Dialog */}
       <Dialog open={crmDialogOpen} onOpenChange={setCrmDialogOpen}>
-        <DialogContent className="rounded-2xl sm:max-w-md">
+        <DialogContent className="max-h-[90vh] overflow-y-auto rounded-2xl sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               {selectedCrmData && (
@@ -514,12 +652,88 @@ export function ResultsPanel({
                 </div>
               </div>
             </div>
+
+            {selectedCrm === "salesforce" && (
+              <div className="space-y-3 rounded-xl border border-border/50 bg-background p-4">
+                <p className="text-xs font-medium text-foreground">Salesforce Connected App</p>
+                <div className="grid gap-2">
+                  <Input
+                    value={salesforceConfig.loginUrl}
+                    onChange={(event) => updateSalesforceField("loginUrl", event.target.value)}
+                    placeholder="Login URL (e.g. https://login.salesforce.com)"
+                    className="h-8 text-xs"
+                  />
+                  <Input
+                    value={salesforceConfig.clientId}
+                    onChange={(event) => updateSalesforceField("clientId", event.target.value)}
+                    placeholder="Connected App Client ID"
+                    className="h-8 text-xs"
+                  />
+                  <Input
+                    type="password"
+                    value={salesforceConfig.clientSecret}
+                    onChange={(event) => updateSalesforceField("clientSecret", event.target.value)}
+                    placeholder="Connected App Client Secret"
+                    className="h-8 text-xs"
+                  />
+                  <Input
+                    value={salesforceConfig.username}
+                    onChange={(event) => updateSalesforceField("username", event.target.value)}
+                    placeholder="Salesforce Username"
+                    className="h-8 text-xs"
+                  />
+                  <Input
+                    type="password"
+                    value={salesforceConfig.password}
+                    onChange={(event) => updateSalesforceField("password", event.target.value)}
+                    placeholder="Salesforce Password"
+                    className="h-8 text-xs"
+                  />
+                  <Input
+                    type="password"
+                    value={salesforceConfig.securityToken}
+                    onChange={(event) => updateSalesforceField("securityToken", event.target.value)}
+                    placeholder="Security Token"
+                    className="h-8 text-xs"
+                  />
+                  <Input
+                    value={salesforceConfig.apiVersion || ""}
+                    onChange={(event) => updateSalesforceField("apiVersion", event.target.value)}
+                    placeholder="API Version (e.g. v61.0)"
+                    className="h-8 text-xs"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between gap-2">
+                  <span className={cn(
+                    "text-xs",
+                    salesforceConnectionOk ? "text-primary" : "text-muted-foreground",
+                  )}>
+                    {salesforceConnectionOk ? "Connection verified" : "Connection not tested"}
+                  </span>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-8 rounded-lg bg-transparent text-xs"
+                    onClick={handleSalesforceTestConnection}
+                    disabled={isTestingSalesforce || isSyncingSalesforce}
+                  >
+                    {isTestingSalesforce ? "Testing..." : "Test Connection"}
+                  </Button>
+                </div>
+              </div>
+            )}
+
             <div className="flex gap-2">
               <Button variant="outline" className="flex-1 rounded-xl bg-transparent" onClick={() => setCrmDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button className="flex-1 rounded-xl" onClick={handleCrmSync}>
-                Sync Now
+              <Button
+                className="flex-1 rounded-xl"
+                onClick={handleCrmSync}
+                disabled={isSyncingSalesforce || isTestingSalesforce}
+              >
+                {selectedCrm === "salesforce" && isSyncingSalesforce ? "Syncing..." : "Sync Now"}
               </Button>
             </div>
           </div>
