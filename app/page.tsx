@@ -425,7 +425,7 @@ export default function HomePage() {
             <h1 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               Your AI agent for{" "}
               <span className="relative inline-block">
-                <span className="relative z-10 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Google Maps data</span>
+                <span className="relative z-10 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">local business data</span>
                 <span className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-primary/30" />
               </span>
             </h1>
@@ -472,7 +472,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ====== WHY NOT GOOGLE MAPS -- CLEAN COMPARISON ====== */}
+      {/* ====== WHY TEAMS UPGRADE -- CLEAN COMPARISON ====== */}
       <section className="relative overflow-hidden border-b border-border/50 py-20 lg:py-28" id="why-extractai">
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <div className="absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
@@ -485,10 +485,10 @@ export default function HomePage() {
               Why teams switch to ExtractAI
             </div>
             <h2 className="text-balance text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              Go beyond native Google Maps limits
+              Go beyond manual map prospecting limits
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-muted-foreground">
-              Google Maps was built for consumers, not data teams. Here{"'"}s what changes with an AI-powered approach.
+              Traditional map search was built for consumers, not data teams. Here{"'"}s what changes with an AI-powered approach.
             </p>
           </div>
 
@@ -497,7 +497,7 @@ export default function HomePage() {
             {/* Table header */}
             <div className="grid grid-cols-3 border-b border-border/50 bg-muted/30 px-5 py-3.5">
               <span className="text-xs font-medium text-muted-foreground">Feature</span>
-              <span className="text-center text-xs font-medium text-muted-foreground">Google Maps</span>
+              <span className="text-center text-xs font-medium text-muted-foreground">Manual Map Search</span>
               <span className="text-center text-xs font-medium text-primary">ExtractAI</span>
             </div>
             {/* Table rows */}
@@ -551,7 +551,7 @@ export default function HomePage() {
             </h2>
             <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base">
               Every extracted business is plotted on an interactive map with color-coded lead scoring.
-              Click any pin to reveal ratings, contact info, and a direct link to Google Maps.
+              Click any pin to reveal ratings, contact info, and a direct source listing link.
             </p>
           </div>
           <div className="mt-14">
@@ -590,7 +590,7 @@ export default function HomePage() {
               30+ data fields extracted per place
             </h2>
             <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base">
-              The AI agent extracts everything Google Maps shows and enriches it further -- emails, social profiles, review insights, and operational status.
+              The AI agent extracts source listing details and enriches them further -- emails, social profiles, review insights, and operational status.
             </p>
           </div>
           <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -768,7 +768,7 @@ export default function HomePage() {
               Ready to deploy your AI extraction agent?
             </h2>
             <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Start extracting Google Maps data in seconds. Visualize on map, filter by lead score, push to CRM.
+              Start extracting local business data in seconds. Visualize on map, filter by lead score, push to CRM.
             </p>
             <Button
               size="lg"

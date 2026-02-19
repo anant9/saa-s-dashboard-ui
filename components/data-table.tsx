@@ -223,7 +223,7 @@ function ExpandedRow({ biz }: { biz: BusinessResult }) {
                     )}
                     {biz.url && (
                       <a href={biz.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-primary hover:underline">
-                        <ExternalLink className="h-3 w-3" /> Google Maps Listing
+                        <ExternalLink className="h-3 w-3" /> Source Listing
                       </a>
                     )}
                     {biz.menu && (

@@ -152,7 +152,7 @@ function toSalesforceLeadPayload(results: BusinessResult[]) {
       biz.categoryName ? `Category: ${biz.categoryName}` : "",
       Number.isFinite(biz.totalScore) ? `Rating: ${biz.totalScore}` : "",
       Number.isFinite(biz.reviewsCount) ? `Reviews: ${biz.reviewsCount}` : "",
-      biz.url ? `Google Maps: ${biz.url}` : "",
+      biz.url ? `Source Listing: ${biz.url}` : "",
       biz.placeId ? `Place ID: ${biz.placeId}` : "",
       biz.leadScore ? `Lead Score: ${biz.leadScore}` : "",
     ].filter(Boolean).join(" | "),

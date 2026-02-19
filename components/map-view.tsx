@@ -333,7 +333,7 @@ export function MapView({ results }: MapViewProps) {
               </Badge>
             </div>
 
-            {/* Google Maps link */}
+            {/* Source listing link */}
             <a
               href={selectedBiz.url}
               target="_blank"
@@ -341,7 +341,7 @@ export function MapView({ results }: MapViewProps) {
               className="mt-1 flex items-center gap-1.5 rounded-lg border border-border/50 bg-muted/30 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
             >
               <ExternalLink className="h-3 w-3" />
-              View on Google Maps
+              View Source Listing
             </a>
           </div>
         </div>
