@@ -392,7 +392,7 @@ export default function HomePage() {
             <ThemeToggle />
             <Button variant="outline" size="sm" className="hidden h-8 rounded-lg px-3 text-sm font-medium md:inline-flex" onClick={handleHexDemo}>
               <CircuitBoard className="h-3.5 w-3.5" />
-              HEX Demo
+              Mexico Demo
             </Button>
             <Button variant="ghost" size="sm" className="h-8 rounded-lg px-3 text-sm font-medium text-muted-foreground hover:text-foreground" onClick={handleGetStarted}>
               Sign in
@@ -447,7 +447,7 @@ export default function HomePage() {
               </Button>
               <Button variant="outline" size="lg" className="h-12 gap-2.5 rounded-xl border-border/70 bg-transparent px-6 text-sm font-medium hover:bg-accent" onClick={handleHexDemo}>
                 <CircuitBoard className="h-4 w-4" />
-                Open HEX Demo
+                Open Mexico Demo
               </Button>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">Research faster, prospect smarter, and scale globally from a single AI workflow.</p>

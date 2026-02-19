@@ -79,7 +79,7 @@ export function Navbar() {
                 size="sm"
                 className="h-8 rounded-lg px-3 text-sm font-medium text-muted-foreground hover:text-foreground"
               >
-                HEX Demo
+                Mexico Demo
               </Button>
             </Link>
           </nav>
@@ -134,7 +134,7 @@ export function Navbar() {
               <DropdownMenuItem className="gap-2 rounded-lg" asChild>
                 <Link href="/dashboard/HEXOutboundLeadGen">
                   <Zap className="h-4 w-4" />
-                  HEX Demo
+                  Mexico Demo
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
