@@ -47,6 +47,8 @@ import {
   MapIcon,
   Search,
   FilterX,
+  Maximize2,
+  Minimize2,
 } from "lucide-react"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
@@ -71,6 +73,8 @@ type StatusFilter = "all" | "open" | "temporarily-closed" | "permanently-closed"
 interface ResultsPanelProps {
   demoMode?: boolean
   buyerSegmentsLabel?: string
+  isFocusMode?: boolean
+  onToggleFocus?: () => void
 }
 
 function toExportRows(results: BusinessResult[]) {
@@ -161,6 +165,8 @@ function toSalesforceLeadPayload(results: BusinessResult[]) {
 export function ResultsPanel({
   demoMode = false,
   buyerSegmentsLabel,
+  isFocusMode = false,
+  onToggleFocus,
 }: ResultsPanelProps) {
   const { extraction, onSaveSearch } = useDashboard()
   const [page, setPage] = useState(1)
@@ -435,7 +441,7 @@ export function ResultsPanel({
   return (
     <div className="flex h-full flex-col">
       {/* Sticky header */}
-      <div className="sticky top-0 z-10 flex flex-col gap-3 border-b border-border/50 bg-background/80 px-4 py-3 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
+      <div className="sticky top-0 z-10 flex flex-col gap-3 border-b border-border/50 bg-background/80 px-4 py-3 backdrop-blur-sm sm:flex-row sm:flex-wrap sm:items-center">
         <div className="flex flex-wrap items-center gap-2">
           {/* View mode toggle */}
           <div className="flex items-center rounded-lg border border-border/50 bg-muted/30 p-0.5">
@@ -476,7 +482,7 @@ export function ResultsPanel({
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Save Search */}
           <Button variant="outline" size="sm" className="gap-1.5 rounded-xl bg-transparent text-xs" onClick={handleSaveQuery}>
             <Bookmark className="h-3.5 w-3.5" />
@@ -526,6 +532,19 @@ export function ResultsPanel({
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {onToggleFocus && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="gap-1.5 rounded-xl bg-transparent text-xs"
+              onClick={onToggleFocus}
+            >
+              {isFocusMode ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+              <span className="hidden sm:inline">{isFocusMode ? "Exit Focus" : "Focus"}</span>
+            </Button>
+          )}
         </div>
       </div>
 

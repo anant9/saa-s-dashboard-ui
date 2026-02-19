@@ -3,6 +3,7 @@
 import { useEffect, useRef, type ChangeEvent } from "react"
 import { useDashboard } from "@/lib/dashboard-context"
 import { ChatMessage } from "@/components/chat-message"
+import type { ChatMessage as ChatMessageType } from "@/lib/types"
 import { ChatInput } from "@/components/chat-input"
 import { TypingIndicator } from "@/components/typing-indicator"
 import { Button } from "@/components/ui/button"
@@ -11,12 +12,21 @@ import { toast } from "sonner"
 
 interface ChatPanelProps {
   onCollapse?: () => void
+  mockUserInput?: string
 }
 
-export function ChatPanel({ onCollapse }: ChatPanelProps) {
+export function ChatPanel({ onCollapse, mockUserInput }: ChatPanelProps) {
   const { messages, isTyping, importExtractionFromJson } = useDashboard()
   const scrollRef = useRef<HTMLDivElement>(null)
   const importInputRef = useRef<HTMLInputElement>(null)
+  const mockQueryMessage: ChatMessageType | null = mockUserInput
+    ? {
+        id: "mock_query_message",
+        role: "user",
+        content: mockUserInput,
+        timestamp: new Date(),
+      }
+    : null
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -158,6 +168,7 @@ export function ChatPanel({ onCollapse }: ChatPanelProps) {
           </div>
         ) : (
           <div className="flex flex-col gap-4">
+            {mockQueryMessage && <ChatMessage message={mockQueryMessage} />}
             {messages.map((msg) => (
               <ChatMessage key={msg.id} message={msg} />
             ))}

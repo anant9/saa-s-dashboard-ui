@@ -1,0 +1,1123 @@
+{
+  "total_results": 20,
+  "results": [
+    {
+      "name": "Montajes e Ingenierías Sultana S.A de C.V",
+      "place_id": "ChIJmzVrSomVYoYRG3XgEKwrcZI",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Montajes%20e%20Ingenier%C3%ADas%20Sultana%20S.A%20de%20C.V&query_place_id=ChIJmzVrSomVYoYRG3XgEKwrcZI",
+      "formatted_address": "Regina 451, Regina, 64290 Monterrey, N.L., Mexico",
+      "latitude": 25.7079274,
+      "longitude": -100.3163646,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64290",
+      "formatted_phone_number": "+52 81 1454 5134",
+      "international_phone_number": "+528114545134",
+      "website": "http://www.sultanamx.com/",
+      "rating": 4.8,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": [
+          "Thursday: 8:30 AM to 6 PM"
+        ]
+      },
+      "photos": [
+        "https://lh3.googleusercontent.com/p/AF1QipNRJCevort2o6FroLRnZxw1WuDtUmtjNb3c_6xQ=w426-h240-k-no"
+      ],
+      "categories": [
+        "Construction company"
+      ],
+      "neighborhood": "Regina",
+      "street": "Regina 451",
+      "claim_this_business": false,
+      "rank": 1,
+      "image_url": "https://lh3.googleusercontent.com/p/AF1QipNRJCevort2o6FroLRnZxw1WuDtUmtjNb3c_6xQ=w426-h240-k-no",
+      "images_count": 4,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "10552263419923297563",
+      "fid": "0x866295894a6b359b:0x92712bac10e0751b",
+      "kgmid": "/g/11gxsssdn5",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.32384418947191,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:01.524Z",
+      "additional_info": null,
+      "opening_hours_raw": [
+        {
+          "day": "Thursday",
+          "hours": "8:30 AM to 6 PM"
+        }
+      ]
+    },
+    {
+      "name": "Electromontajes, S.A. de C.V.",
+      "place_id": "ChIJFer1Cb6VYoYR-953gKoA0cQ",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Electromontajes%2C%20S.A.%20de%20C.V.&query_place_id=ChIJFer1Cb6VYoYR-953gKoA0cQ",
+      "formatted_address": "C. Julián Villagrán, Bella Vista, 64410 Monterrey, N.L., Mexico",
+      "latitude": 25.6978652,
+      "longitude": -100.3216818,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64410",
+      "formatted_phone_number": "+52 81 8372 9820",
+      "international_phone_number": "+528183729820",
+      "website": "http://www.electromontajes.com.mx/",
+      "rating": 5,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": [
+          "Thursday: 8 AM to 5 PM"
+        ]
+      },
+      "photos": [
+        "https://lh3.googleusercontent.com/p/AF1QipMlOPZI__wUkAWWFA74UklQPulXCJiPmu2zMlva=w408-h357-k-no"
+      ],
+      "categories": [
+        "Construction company",
+        "Business to business service",
+        "Civil engineer",
+        "Machine maintenance service",
+        "Mechanical contractor"
+      ],
+      "neighborhood": "Bella Vista",
+      "street": "C. Julián Villagrán",
+      "claim_this_business": false,
+      "rank": 2,
+      "image_url": "https://lh3.googleusercontent.com/p/AF1QipMlOPZI__wUkAWWFA74UklQPulXCJiPmu2zMlva=w408-h357-k-no",
+      "images_count": 16,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "14182117433866182395",
+      "fid": "0x866295be09f5ea15:0xc4d100aa8077defb",
+      "kgmid": "/g/1tr8l_p5",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.32384418947191,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:01.525Z",
+      "additional_info": null,
+      "opening_hours_raw": [
+        {
+          "day": "Thursday",
+          "hours": "8 AM to 5 PM"
+        }
+      ]
+    },
+    {
+      "name": "Constructora Maiz Mier",
+      "place_id": "ChIJ8SAori6-YoYRDOUA5_RQU1U",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Constructora%20Maiz%20Mier&query_place_id=ChIJ8SAori6-YoYRDOUA5_RQU1U",
+      "formatted_address": "C. Mariano Matamoros 506, Centro, 64000 Monterrey, N.L., Mexico",
+      "latitude": 25.6688751,
+      "longitude": -100.3106203,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64000",
+      "formatted_phone_number": "+52 81 8340 5920",
+      "international_phone_number": "+528183405920",
+      "website": "https://www.constructoramaizmier.com/",
+      "rating": 4.3,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": [
+          "Thursday: 9 AM to 7 PM"
+        ]
+      },
+      "photos": [
+        "https://lh3.googleusercontent.com/gps-cs-s/AHVAwepv9zzS9gr3TX-Nd2t6gadPper1i3K2lGpfv9bPR6INQPkywONalRKKdT8PqdQ9ZqnJRsM6ve6SE5WbF6BAehckcE3fuGKovZ7c8oMDb7Xe0Or8nsTZkMueYzTjmykvKauEOfIGWA=w408-h725-k-no"
+      ],
+      "categories": [
+        "Construction company",
+        "Construction equipment supplier"
+      ],
+      "neighborhood": "Centro",
+      "street": "C. Mariano Matamoros 506",
+      "claim_this_business": false,
+      "rank": 4,
+      "image_url": "https://lh3.googleusercontent.com/gps-cs-s/AHVAwepv9zzS9gr3TX-Nd2t6gadPper1i3K2lGpfv9bPR6INQPkywONalRKKdT8PqdQ9ZqnJRsM6ve6SE5WbF6BAehckcE3fuGKovZ7c8oMDb7Xe0Or8nsTZkMueYzTjmykvKauEOfIGWA=w408-h725-k-no",
+      "images_count": 5,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "6148346929068696844",
+      "fid": "0x8662be2eae2820f1:0x555350f4e700e50c",
+      "kgmid": "/g/1tf_nqx3",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.32384418947191,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:01.525Z",
+      "additional_info": null,
+      "opening_hours_raw": [
+        {
+          "day": "Thursday",
+          "hours": "9 AM to 7 PM"
+        }
+      ]
+    },
+    {
+      "name": "Construction and Designs",
+      "place_id": "ChIJtZco0IiVYoYRKpZ5AprGhW0",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Construction%20and%20Designs&query_place_id=ChIJtZco0IiVYoYRKpZ5AprGhW0",
+      "formatted_address": "Xicoténcatl 603 Nte, Centro, 64000 Monterrey, N.L., Mexico",
+      "latitude": 25.6827408,
+      "longitude": -100.3317274,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64000",
+      "formatted_phone_number": "+52 81 8347 9623",
+      "international_phone_number": "+528183479623",
+      "website": "http://www.corporativolob.com/",
+      "rating": null,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": [
+          "Thursday: 8 AM to 5 PM"
+        ]
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=gpP4cawpWRBnc2jCF7ZcIA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=104.5248&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Construction company"
+      ],
+      "neighborhood": "Centro",
+      "street": "Xicoténcatl 603 Nte",
+      "claim_this_business": false,
+      "rank": 5,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=gpP4cawpWRBnc2jCF7ZcIA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=104.5248&pitch=0&thumbfov=100",
+      "images_count": 3,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "7891932286805448234",
+      "fid": "0x86629588d02897b5:0x6d85c69a0279962a",
+      "kgmid": "/g/11grrq64gv",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.32384418947191,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:01.525Z",
+      "additional_info": null,
+      "opening_hours_raw": [
+        {
+          "day": "Thursday",
+          "hours": "8 AM to 5 PM"
+        }
+      ]
+    },
+    {
+      "name": "Freyssinet de México",
+      "place_id": "ChIJdQQSKeeVYoYRhV2mBGUtf2c",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "CLOSED_TEMPORARILY",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Freyssinet%20de%20M%C3%A9xico&query_place_id=ChIJdQQSKeeVYoYRhV2mBGUtf2c",
+      "formatted_address": "Av. Simón Bolívar 1527, Mitras Centro, 64460 Monterrey, N.L., Mexico",
+      "latitude": 25.6935958,
+      "longitude": -100.3436137,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64460",
+      "formatted_phone_number": "+52 81 8333 6163",
+      "international_phone_number": "+528183336163",
+      "website": "http://www.freyssinet.com.pa/freyssinet/wfreyssinet_mx.nsf",
+      "rating": 4.8,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": null
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=nt_7MFBZU5MZvifBXdV8MA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=104.08626&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Construction company"
+      ],
+      "neighborhood": "Mitras Centro",
+      "street": "Av. Simón Bolívar 1527",
+      "claim_this_business": true,
+      "rank": 7,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=nt_7MFBZU5MZvifBXdV8MA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=104.08626&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": true,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "7457729419841789317",
+      "fid": "0x866295e729120475:0x677f2d6504a65d85",
+      "kgmid": "/g/1tc_92n9",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.32384418947191,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:01.525Z",
+      "additional_info": null,
+      "opening_hours_raw": []
+    },
+    {
+      "name": "CEMEX",
+      "place_id": "ChIJ7xawsAyVYoYROk8YG1kmT9U",
+      "types": [
+        "Ready mix concrete supplier"
+      ],
+      "primary_type": "Ready mix concrete supplier",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=CEMEX&query_place_id=ChIJ7xawsAyVYoYROk8YG1kmT9U",
+      "formatted_address": "Av. Independencia lote No. 90, Cementos, 64520 Monterrey, N.L., Mexico",
+      "latitude": 25.7004497,
+      "longitude": -100.298501,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64520",
+      "formatted_phone_number": "+52 81 8300 1000",
+      "international_phone_number": "+528183001000",
+      "website": "http://www.cemexmexico.com/",
+      "rating": 4.5,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": null
+      },
+      "photos": [
+        "https://lh3.googleusercontent.com/gps-cs-s/AHVAweqCKGQUMuhRjANQ9L4ZQcUYXgyYc1EnvjmGfbanxpzDAVyNTmDHVnYRzYW1m0mWQyye2fVXzalEBosQle4UGuLXErVCqVFAPk3ea6hAT6-utV4JmTRwJ8S2SfQCjDIt2bBgvlQ=w408-h544-k-no"
+      ],
+      "categories": [
+        "Ready mix concrete supplier"
+      ],
+      "neighborhood": "Cementos",
+      "street": "Av. Independencia lote No. 90",
+      "claim_this_business": false,
+      "rank": 2,
+      "image_url": "https://lh3.googleusercontent.com/gps-cs-s/AHVAweqCKGQUMuhRjANQ9L4ZQcUYXgyYc1EnvjmGfbanxpzDAVyNTmDHVnYRzYW1m0mWQyye2fVXzalEBosQle4UGuLXErVCqVFAPk3ea6hAT6-utV4JmTRwJ8S2SfQCjDIt2bBgvlQ=w408-h544-k-no",
+      "images_count": 33,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "15370546217387315002",
+      "fid": "0x8662950cb0b016ef:0xd54f26591b184f3a",
+      "kgmid": "/g/11csb1zfkb",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.202Z",
+      "additional_info": {
+        "Accessibility": [
+          {
+            "Wheelchair accessible entrance": true
+          },
+          {
+            "Wheelchair accessible parking lot": true
+          }
+        ]
+      },
+      "opening_hours_raw": []
+    },
+    {
+      "name": "Sando Multiservicios Industriales",
+      "place_id": "ChIJRwn_wKaVYoYRrtqq1e9C1CI",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Sando%20Multiservicios%20Industriales&query_place_id=ChIJRwn_wKaVYoYRrtqq1e9C1CI",
+      "formatted_address": "Luis González Obregón 212, Sin Nombre de Col 20, 64500 Monterrey, N.L., Mexico",
+      "latitude": 25.7059376,
+      "longitude": -100.3089549,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64500",
+      "formatted_phone_number": "+52 81 8351 7782",
+      "international_phone_number": "+528183517782",
+      "website": null,
+      "rating": 5,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": null
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=lIvqC-HbO1BTaQ_TqCO57A&cb_client=search.gws-prod.gps&w=408&h=240&yaw=197.18164&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Construction company"
+      ],
+      "neighborhood": "Sin Nombre de Colonia 20",
+      "street": "Luis González Obregón 212",
+      "claim_this_business": true,
+      "rank": 3,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=lIvqC-HbO1BTaQ_TqCO57A&cb_client=search.gws-prod.gps&w=408&h=240&yaw=197.18164&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "2509704490201569966",
+      "fid": "0x866295a6c0ff0947:0x22d442efd5aadaae",
+      "kgmid": "/g/11flrpb9l0",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": []
+    },
+    {
+      "name": "BXH",
+      "place_id": "ChIJmV_YvomVYoYRkO5_fwo7194",
+      "types": [
+        "Home builder"
+      ],
+      "primary_type": "Home builder",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=BXH&query_place_id=ChIJmV_YvomVYoYRkO5_fwo7194",
+      "formatted_address": "Vicente Guerrero 2035, Centrika, 64450 Monterrey, N.L., Mexico",
+      "latitude": 25.6963264,
+      "longitude": -100.3102311,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64450",
+      "formatted_phone_number": "+52 55 4132 9407",
+      "international_phone_number": "+525541329407",
+      "website": "https://www.bxh.mx/",
+      "rating": 5,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": null
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=mSV_e1mNy1m17gy6M6Maaw&cb_client=search.gws-prod.gps&w=408&h=240&yaw=90.51223&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Home builder"
+      ],
+      "neighborhood": "Centrika",
+      "street": "Vicente Guerrero 2035",
+      "claim_this_business": true,
+      "rank": 4,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=mSV_e1mNy1m17gy6M6Maaw&cb_client=search.gws-prod.gps&w=408&h=240&yaw=90.51223&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "16057367912687595152",
+      "fid": "0x86629589bed85f99:0xded73b0a7f7fee90",
+      "kgmid": "/g/11fd4xycb0",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": []
+    },
+    {
+      "name": "Grupo Industrial Cisem21 S.A. de C.V.",
+      "place_id": "ChIJD2DfTQCVYoYRU31qVGNsSRw",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Grupo%20Industrial%20Cisem21%20S.A.%20de%20C.V.&query_place_id=ChIJD2DfTQCVYoYRU31qVGNsSRw",
+      "formatted_address": "Av. Manuel L. Barragán 111 B, Regina, 64290 Monterrey, N.L., Mexico",
+      "latitude": 25.7053688,
+      "longitude": -100.3161756,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64290",
+      "formatted_phone_number": "+52 81 8351 5163",
+      "international_phone_number": "+528183515163",
+      "website": "http://gic21.com.mx/",
+      "rating": 2,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": [
+          "Thursday: 9 AM to 6 PM"
+        ]
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=2aWPnSFi6_sNdDEs63kiAg&cb_client=search.gws-prod.gps&w=408&h=240&yaw=90.01061&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Construction company"
+      ],
+      "neighborhood": "Regina",
+      "street": "Av. Manuel L. Barragán 111 B",
+      "claim_this_business": true,
+      "rank": 5,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=2aWPnSFi6_sNdDEs63kiAg&cb_client=search.gws-prod.gps&w=408&h=240&yaw=90.01061&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "2038279480235687251",
+      "fid": "0x866295004ddf600f:0x1c496c63546a7d53",
+      "kgmid": "/g/11vpwzqtjq",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": [
+        {
+          "day": "Thursday",
+          "hours": "9 AM to 6 PM"
+        }
+      ]
+    },
+    {
+      "name": "Silos 11 y 12 CEMEX",
+      "place_id": "ChIJcV_hfACVYoYRSTcpt6zBJq0",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Silos%2011%20y%2012%20CEMEX&query_place_id=ChIJcV_hfACVYoYRSTcpt6zBJq0",
+      "formatted_address": "Nardo 904, Cementos, 64520 Monterrey, N.L., Mexico",
+      "latitude": 25.701444,
+      "longitude": -100.300914,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64520",
+      "formatted_phone_number": null,
+      "international_phone_number": null,
+      "website": null,
+      "rating": 5,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": null
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=phGVFLFKdbcq09g2xxofkw&cb_client=search.gws-prod.gps&w=408&h=240&yaw=284.13058&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Construction company"
+      ],
+      "neighborhood": "Cementos",
+      "street": "Nardo 904",
+      "claim_this_business": true,
+      "rank": 6,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=phGVFLFKdbcq09g2xxofkw&cb_client=search.gws-prod.gps&w=408&h=240&yaw=284.13058&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "12476872765228005193",
+      "fid": "0x866295007ce15f71:0xad26c1acb7293749",
+      "kgmid": "/g/11xg4y37g3",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": []
+    },
+    {
+      "name": "CYCSA Consultoría y Construcción",
+      "place_id": "ChIJY4n7Nj_UGgwRrpWAOm5e0qs",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=CYCSA%20Consultor%C3%ADa%20y%20Construcci%C3%B3n&query_place_id=ChIJY4n7Nj_UGgwRrpWAOm5e0qs",
+      "formatted_address": "Av. La Chimenea #201 3er Piso, Col, La Chimenea Segundo Sector, Centrika, 64520 Monterrey, N.L., Mexico",
+      "latitude": 25.6998124,
+      "longitude": -100.3075312,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64520",
+      "formatted_phone_number": "+52 81 1284 8742",
+      "international_phone_number": "+528112848742",
+      "website": "https://cycsaconstruccion.com/",
+      "rating": null,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": [
+          "Thursday: Open 24 hours"
+        ]
+      },
+      "photos": [
+        "https://lh3.googleusercontent.com/p/AF1QipO5AmgsZde0vDddGSrDPMZQPzHvpsKvuwOL3jPz=w408-h544-k-no"
+      ],
+      "categories": [
+        "Construction company"
+      ],
+      "neighborhood": "Centrika",
+      "street": "Av. La Chimenea #201 3er Piso, Col, La Chimenea Segundo Sector",
+      "claim_this_business": false,
+      "rank": 7,
+      "image_url": "https://lh3.googleusercontent.com/p/AF1QipO5AmgsZde0vDddGSrDPMZQPzHvpsKvuwOL3jPz=w408-h544-k-no",
+      "images_count": 16,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "12381062153115833774",
+      "fid": "0xc1ad43f36fb8963:0xabd25e6e3a8095ae",
+      "kgmid": "/g/11yjl3p7g_",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": [
+        {
+          "day": "Thursday",
+          "hours": "Open 24 hours"
+        }
+      ]
+    },
+    {
+      "name": "torreforte",
+      "place_id": "ChIJJ-NPL6WVYoYRI6SSvZWghaQ",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=torreforte&query_place_id=ChIJJ-NPL6WVYoYRI6SSvZWghaQ",
+      "formatted_address": "Martín Carrera 395, Monterrey Center, 64290 Monterrey, N.L., Mexico",
+      "latitude": 25.7075474,
+      "longitude": -100.3154557,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64290",
+      "formatted_phone_number": "+52 81 1225 3859",
+      "international_phone_number": "+528112253859",
+      "website": "http://torreforte.mx/",
+      "rating": null,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": null
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=obmHqcwX3gxRcVRogWnVuA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=351.61804&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Construction company"
+      ],
+      "neighborhood": "Monterrey Center",
+      "street": "Martín Carrera 395",
+      "claim_this_business": true,
+      "rank": 8,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=obmHqcwX3gxRcVRogWnVuA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=351.61804&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "11855058159113774115",
+      "fid": "0x866295a52f4fe327:0xa485a095bd92a423",
+      "kgmid": "/g/11l29jdmrc",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": []
+    },
+    {
+      "name": "sicsa",
+      "place_id": "ChIJ9ZYcPxCVYoYRCCIgCanYtI8",
+      "types": [
+        "Custom home builder"
+      ],
+      "primary_type": "Custom home builder",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=sicsa&query_place_id=ChIJ9ZYcPxCVYoYRCCIgCanYtI8",
+      "formatted_address": "Heroico Colegio Militar 3 58, Del Prado, 64410 Monterrey, N.L., Mexico",
+      "latitude": 25.6999508,
+      "longitude": -100.315152,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64410",
+      "formatted_phone_number": "+52 81 1236 4549",
+      "international_phone_number": "+528112364549",
+      "website": null,
+      "rating": 5,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": [
+          "Thursday: 8 to 11 AM"
+        ]
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=llEazB6HFmazxznMlHlUrA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=207.61739&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Custom home builder"
+      ],
+      "neighborhood": "Del Prado",
+      "street": "Heroico Colegio Militar 3 58",
+      "claim_this_business": true,
+      "rank": 9,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=llEazB6HFmazxznMlHlUrA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=207.61739&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "10355139663745786376",
+      "fid": "0x866295103f1c96f5:0x8fb4d8a909202208",
+      "kgmid": "/g/11n_s300nn",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": [
+        {
+          "day": "Thursday",
+          "hours": "8 to 11 AM"
+        }
+      ]
+    },
+    {
+      "name": "GRUPO DELCO",
+      "place_id": "ChIJmywf-KCVYoYR9HbLLradskM",
+      "types": [
+        "Floor refinishing service"
+      ],
+      "primary_type": "Floor refinishing service",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=GRUPO%20DELCO&query_place_id=ChIJmywf-KCVYoYR9HbLLradskM",
+      "formatted_address": "Violeta 620 E, Victoria, 64520 Monterrey, N.L., Mexico",
+      "latitude": 25.7021918,
+      "longitude": -100.3069642,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64520",
+      "formatted_phone_number": "+52 81 8647 1878",
+      "international_phone_number": "+528186471878",
+      "website": "http://grupodelco.com/",
+      "rating": 3.8,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": null
+      },
+      "photos": [
+        "https://lh3.googleusercontent.com/gps-cs-s/AHVAwepdiCbzBgGh9kaGM8riouZJvm3GTNq4X9Q8WKyKnungM4vPFalGQQ5z3b718ANzGB8t_OwCLuTLZyMXDhJSLzn1IVBlullTjL5tABw4ijHKT_h4APjdJU6_4yl87jadjMH3vlJAZw=w426-h240-k-no"
+      ],
+      "categories": [
+        "Floor refinishing service",
+        "Business center"
+      ],
+      "neighborhood": "Victoria",
+      "street": "Violeta 620 E",
+      "claim_this_business": true,
+      "rank": 10,
+      "image_url": "https://lh3.googleusercontent.com/gps-cs-s/AHVAwepdiCbzBgGh9kaGM8riouZJvm3GTNq4X9Q8WKyKnungM4vPFalGQQ5z3b718ANzGB8t_OwCLuTLZyMXDhJSLzn1IVBlullTjL5tABw4ijHKT_h4APjdJU6_4yl87jadjMH3vlJAZw=w426-h240-k-no",
+      "images_count": 15,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "4878134752190363380",
+      "fid": "0x866295a0f81f2c9b:0x43b29db62ecb76f4",
+      "kgmid": "/g/11bym_z004",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": []
+    },
+    {
+      "name": "SC Company S.A DE C.V",
+      "place_id": "ChIJY1elJneVYoYRFwjcG2H8390",
+      "types": [
+        "Architect"
+      ],
+      "primary_type": "Architect",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=SC%20Company%20S.A%20DE%20C.V&query_place_id=ChIJY1elJneVYoYRFwjcG2H8390",
+      "formatted_address": "Alamillo 325, Del Prado, 64410 Monterrey, N.L., Mexico",
+      "latitude": 25.7007478,
+      "longitude": -100.314723,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64410",
+      "formatted_phone_number": "+52 81 8372 9368",
+      "international_phone_number": "+528183729368",
+      "website": "https://www.sccompany.mx/",
+      "rating": 3.7,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": [
+          "Thursday: 8:30 AM to 6:30 PM"
+        ]
+      },
+      "photos": [
+        "https://lh3.googleusercontent.com/p/AF1QipO8RVzQqh07KN3c_c_1KSEhBIdjzAlmYxxE5RXw=w426-h240-k-no"
+      ],
+      "categories": [
+        "Architect"
+      ],
+      "neighborhood": "Del Prado",
+      "street": "Alamillo 325",
+      "claim_this_business": false,
+      "rank": 11,
+      "image_url": "https://lh3.googleusercontent.com/p/AF1QipO8RVzQqh07KN3c_c_1KSEhBIdjzAlmYxxE5RXw=w426-h240-k-no",
+      "images_count": 5,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "15987774696197982231",
+      "fid": "0x8662957726a55763:0xdddffc611bdc0817",
+      "kgmid": "/g/11s1q43d6j",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": [
+        {
+          "day": "Thursday",
+          "hours": "8:30 AM to 6:30 PM"
+        }
+      ]
+    },
+    {
+      "name": "Equipo Ligero De Construcción",
+      "place_id": "ChIJh88xaKCVYoYRFlbtoiwha7Q",
+      "types": [
+        "Construction equipment supplier"
+      ],
+      "primary_type": "Construction equipment supplier",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Equipo%20Ligero%20De%20Construcci%C3%B3n&query_place_id=ChIJh88xaKCVYoYRFlbtoiwha7Q",
+      "formatted_address": "Zuazua Nte., Victoria, 64520 Monterrey, N.L., Mexico",
+      "latitude": 25.7010662,
+      "longitude": -100.3062494,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64520",
+      "formatted_phone_number": null,
+      "international_phone_number": null,
+      "website": null,
+      "rating": 3.5,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": [
+          "Thursday: 8 AM to 6 PM"
+        ]
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=1uiXAN8ziO4YQRT0I6ddgg&cb_client=search.gws-prod.gps&w=408&h=240&yaw=108.19395&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Construction equipment supplier"
+      ],
+      "neighborhood": "Victoria",
+      "street": "Zuazua Nte.",
+      "claim_this_business": true,
+      "rank": 12,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=1uiXAN8ziO4YQRT0I6ddgg&cb_client=search.gws-prod.gps&w=408&h=240&yaw=108.19395&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "13000521224930809366",
+      "fid": "0x866295a06831cf87:0xb46b212ca2ed5616",
+      "kgmid": "/g/11bzztdjb3",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": [
+        {
+          "day": "Thursday",
+          "hours": "8 AM to 6 PM"
+        }
+      ]
+    },
+    {
+      "name": "el sabino",
+      "place_id": "ChIJ-XP3FACVYoYREZlCMYvUijM",
+      "types": [
+        "Construction company"
+      ],
+      "primary_type": "Construction company",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=el%20sabino&query_place_id=ChIJ-XP3FACVYoYREZlCMYvUijM",
+      "formatted_address": "Laureles, Del Prado, 64410 Monterrey, N.L., Mexico",
+      "latitude": 25.6994774,
+      "longitude": -100.3134686,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64410",
+      "formatted_phone_number": null,
+      "international_phone_number": null,
+      "website": null,
+      "rating": null,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": null
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=q67to3QsupAgwbzEWu8AIA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=268.35904&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Construction company"
+      ],
+      "neighborhood": "Del Prado",
+      "street": "Laureles",
+      "claim_this_business": true,
+      "rank": 13,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=q67to3QsupAgwbzEWu8AIA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=268.35904&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "3714014537012386065",
+      "fid": "0x8662950014f773f9:0x338ad48b31429911",
+      "kgmid": "/g/11w7gl48vy",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": []
+    },
+    {
+      "name": "Céntrika Platinum",
+      "place_id": "ChIJlRtSI5KVYoYRbHdkmO-7fcU",
+      "types": [
+        "Apartment complex"
+      ],
+      "primary_type": "Apartment complex",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=C%C3%A9ntrika%20Platinum&query_place_id=ChIJlRtSI5KVYoYRbHdkmO-7fcU",
+      "formatted_address": "Av. Céntrika 101, Centrika, 64520 Monterrey, N.L., Mexico",
+      "latitude": 25.6983579,
+      "longitude": -100.3035232,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64520",
+      "formatted_phone_number": "+52 81 1274 7740",
+      "international_phone_number": "+528112747740",
+      "website": "https://www.centrikaplatinum.com/",
+      "rating": 4.6,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": null
+      },
+      "photos": [
+        "https://lh3.googleusercontent.com/gps-cs-s/AHVAweq9m-xyuL7KIPsfG5rOsbNJQFKbiMq9VJDFjRLd3kYcstH_sdfncaPgz62ShdXiv1TaahKeVKYCFA-FpgfsQ0GP6oD1pUjr1E9SpJBiUhfPGmzwbeNzmTj9g8m8bzMCMB5B4EU4Aw=w408-h306-k-no"
+      ],
+      "categories": [
+        "Apartment complex"
+      ],
+      "neighborhood": "Centrika",
+      "street": "Av. Céntrika 101",
+      "claim_this_business": true,
+      "rank": 14,
+      "image_url": "https://lh3.googleusercontent.com/gps-cs-s/AHVAweq9m-xyuL7KIPsfG5rOsbNJQFKbiMq9VJDFjRLd3kYcstH_sdfncaPgz62ShdXiv1TaahKeVKYCFA-FpgfsQ0GP6oD1pUjr1E9SpJBiUhfPGmzwbeNzmTj9g8m8bzMCMB5B4EU4Aw=w408-h306-k-no",
+      "images_count": 22,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "14230737035288934252",
+      "fid": "0x8662959223521b95:0xc57dbbef9864776c",
+      "kgmid": "/g/11jv1yt2qq",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": {
+        "Accessibility": [
+          {
+            "Wheelchair accessible entrance": true
+          },
+          {
+            "Wheelchair accessible parking lot": true
+          }
+        ]
+      },
+      "opening_hours_raw": []
+    },
+    {
+      "name": "Construrama",
+      "place_id": "ChIJi6t4uAyVYoYRBTWftQ9DBdo",
+      "types": [
+        "Concrete contractor"
+      ],
+      "primary_type": "Concrete contractor",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Construrama&query_place_id=ChIJi6t4uAyVYoYRBTWftQ9DBdo",
+      "formatted_address": "Av. Independencia, Cementos, lote No. 90 Monterrey, N.L., Mexico",
+      "latitude": 25.7005023,
+      "longitude": -100.2978775,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "lote No. 90",
+      "formatted_phone_number": "+52 81 8526 2340",
+      "international_phone_number": "+528185262340",
+      "website": null,
+      "rating": null,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": null
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=nS6KEp37EvMdP5FVraREZQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=188.85559&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Concrete contractor"
+      ],
+      "neighborhood": "Cementos",
+      "street": "Av. Independencia",
+      "claim_this_business": true,
+      "rank": 15,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=nS6KEp37EvMdP5FVraREZQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=188.85559&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "15710036609902523653",
+      "fid": "0x8662950cb878ab8b:0xda05430fb59f3505",
+      "kgmid": "/g/11sb3n6bsf",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": []
+    },
+    {
+      "name": "García Equipment",
+      "place_id": "ChIJMVDnB6OVYoYRlhO_FaemT9k",
+      "types": [
+        "Construction equipment supplier"
+      ],
+      "primary_type": "Construction equipment supplier",
+      "business_status": "OPERATIONAL",
+      "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Garc%C3%ADa%20Equipment&query_place_id=ChIJMVDnB6OVYoYRlhO_FaemT9k",
+      "formatted_address": "Keramos 320, Del Prado, 64410 Monterrey, N.L., Mexico",
+      "latitude": 25.7020265,
+      "longitude": -100.3145949,
+      "city": "Monterrey",
+      "state": "Nuevo Leon",
+      "country": "MX",
+      "postal_code": "64410",
+      "formatted_phone_number": "+52 81 8331 2183",
+      "international_phone_number": "+528183312183",
+      "website": null,
+      "rating": null,
+      "user_ratings_total": null,
+      "price_level": null,
+      "opening_hours": {
+        "open_now": null,
+        "weekday_text": [
+          "Thursday: 8 AM to 6 PM"
+        ]
+      },
+      "photos": [
+        "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=uJtw8bxCbY31n6IDcy6dxw&cb_client=search.gws-prod.gps&w=408&h=240&yaw=158.38829&pitch=0&thumbfov=100"
+      ],
+      "categories": [
+        "Construction equipment supplier"
+      ],
+      "neighborhood": "Del Prado",
+      "street": "Keramos 320",
+      "claim_this_business": true,
+      "rank": 17,
+      "image_url": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=uJtw8bxCbY31n6IDcy6dxw&cb_client=search.gws-prod.gps&w=408&h=240&yaw=158.38829&pitch=0&thumbfov=100",
+      "images_count": 1,
+      "reviews_distribution": null,
+      "temporarily_closed": false,
+      "permanently_closed": false,
+      "is_advertisement": false,
+      "cid": "15658917665945097110",
+      "fid": "0x866295a307e75031:0xd94fa6a715bf1396",
+      "kgmid": "/g/1tdy09s7",
+      "search_string": "construction companies",
+      "search_page_url": "https://www.google.com/maps/search/construction%20companies/@25.703424965192976,-100.30667181052809,16z?hl=en",
+      "scraped_at": "2026-02-19T10:09:02.203Z",
+      "additional_info": null,
+      "opening_hours_raw": [
+        {
+          "day": "Thursday",
+          "hours": "8 AM to 6 PM"
+        }
+      ]
+    }
+  ],
+  "query": {
+    "query": "provider_import",
+    "type": "natural_language"
+  }
+}
